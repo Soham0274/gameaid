@@ -5,7 +5,10 @@ import ChatInterface from '@/components/ChatInterface';
 import StatsCard from '@/components/StatsCard';
 import RecommendationsCard from '@/components/RecommendationsCard';
 import LoginModal from '@/components/LoginModal';
-import { useToast } from '@/components/ui/use-toast';
+import HeatMap from '@/components/HeatMap';
+import DiscordIntegration from '@/components/DiscordIntegration';
+import RewardsSystem from '@/components/RewardsSystem';
+import { useToast } from '@/hooks/use-toast';
 
 const Index = () => {
   const [questionsLeft, setQuestionsLeft] = useState<number>(10);
@@ -67,24 +70,24 @@ const Index = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               <div className="bg-bgmi-darker p-4 rounded-lg border border-bgmi-blue/20">
                 <h3 className="text-bgmi-blue font-medium mb-2">Season Performance</h3>
-                <p className="text-white/80">K/D Ratio: <span className="text-bgmi-blue font-medium">3.2</span></p>
-                <p className="text-white/80">Win Rate: <span className="text-bgmi-blue font-medium">12%</span></p>
-                <p className="text-white/80">Average Damage: <span className="text-bgmi-blue font-medium">520</span></p>
-                <p className="text-white/80">Matches Played: <span className="text-bgmi-blue font-medium">87</span></p>
+                <p className="text-white">K/D Ratio: <span className="text-bgmi-blue font-medium">3.2</span></p>
+                <p className="text-white">Win Rate: <span className="text-bgmi-blue font-medium">12%</span></p>
+                <p className="text-white">Average Damage: <span className="text-bgmi-blue font-medium">520</span></p>
+                <p className="text-white">Matches Played: <span className="text-bgmi-blue font-medium">87</span></p>
               </div>
               <div className="bg-bgmi-darker p-4 rounded-lg border border-bgmi-blue/20">
                 <h3 className="text-bgmi-blue font-medium mb-2">Weapon Mastery</h3>
-                <p className="text-white/80">Best Weapon: <span className="text-bgmi-blue font-medium">M416</span></p>
-                <p className="text-white/80">Accuracy: <span className="text-bgmi-blue font-medium">18.5%</span></p>
-                <p className="text-white/80">Headshot %: <span className="text-bgmi-blue font-medium">22.1%</span></p>
-                <p className="text-white/80">Avg. Kills: <span className="text-bgmi-blue font-medium">3.8</span></p>
+                <p className="text-white">Best Weapon: <span className="text-bgmi-blue font-medium">M416</span></p>
+                <p className="text-white">Accuracy: <span className="text-bgmi-blue font-medium">18.5%</span></p>
+                <p className="text-white">Headshot %: <span className="text-bgmi-blue font-medium">22.1%</span></p>
+                <p className="text-white">Avg. Kills: <span className="text-bgmi-blue font-medium">3.8</span></p>
               </div>
               <div className="bg-bgmi-darker p-4 rounded-lg border border-bgmi-blue/20">
                 <h3 className="text-bgmi-blue font-medium mb-2">Rank Progress</h3>
-                <p className="text-white/80">Current Rank: <span className="text-bgmi-blue font-medium">Ace</span></p>
-                <p className="text-white/80">Points: <span className="text-bgmi-blue font-medium">4250</span></p>
-                <p className="text-white/80">Rank Up: <span className="text-bgmi-blue font-medium">+30 needed</span></p>
-                <p className="text-white/80">Top %: <span className="text-bgmi-blue font-medium">Top 5%</span></p>
+                <p className="text-white">Current Rank: <span className="text-bgmi-blue font-medium">Ace</span></p>
+                <p className="text-white">Points: <span className="text-bgmi-blue font-medium">4250</span></p>
+                <p className="text-white">Rank Up: <span className="text-bgmi-blue font-medium">+30 needed</span></p>
+                <p className="text-white">Top %: <span className="text-bgmi-blue font-medium">Top 5%</span></p>
               </div>
             </div>
           </div>
@@ -96,15 +99,15 @@ const Index = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="bg-bgmi-darker p-4 rounded-lg border border-bgmi-blue/20">
                 <h3 className="text-bgmi-blue font-medium mb-2">Map Strategies</h3>
-                <p className="text-white/80 mb-2">For Erangel, the best drop locations for high-tier loot are Military Base, Georgopol, and Pochinki.</p>
-                <p className="text-white/80 mb-2">For Miramar, consider dropping at Hacienda del Patron or Los Leones for good starting gear.</p>
-                <p className="text-white/80">Always check the flight path to determine the best locations that won't be heavily contested.</p>
+                <p className="text-white mb-2">For Erangel, the best drop locations for high-tier loot are Military Base, Georgopol, and Pochinki.</p>
+                <p className="text-white mb-2">For Miramar, consider dropping at Hacienda del Patron or Los Leones for good starting gear.</p>
+                <p className="text-white">Always check the flight path to determine the best locations that won't be heavily contested.</p>
               </div>
               <div className="bg-bgmi-darker p-4 rounded-lg border border-bgmi-blue/20">
                 <h3 className="text-bgmi-blue font-medium mb-2">Combat Tips</h3>
-                <p className="text-white/80 mb-2">Always use cover during firefights and avoid standing still.</p>
-                <p className="text-white/80 mb-2">Practice "jiggle peeking" to spot enemies without exposing yourself.</p>
-                <p className="text-white/80">Use grenades to flush out enemies from cover or to create distractions.</p>
+                <p className="text-white mb-2">Always use cover during firefights and avoid standing still.</p>
+                <p className="text-white mb-2">Practice "jiggle peeking" to spot enemies without exposing yourself.</p>
+                <p className="text-white">Use grenades to flush out enemies from cover or to create distractions.</p>
               </div>
             </div>
           </div>
@@ -122,15 +125,15 @@ const Index = () => {
                   <div className="grid grid-cols-3 gap-2 mt-1">
                     <div>
                       <p className="text-xs text-white/50">Damage</p>
-                      <p className="text-white/90">41</p>
+                      <p className="text-white">41</p>
                     </div>
                     <div>
                       <p className="text-xs text-white/50">Fire Rate</p>
-                      <p className="text-white/90">High</p>
+                      <p className="text-white">High</p>
                     </div>
                     <div>
                       <p className="text-xs text-white/50">Recoil</p>
-                      <p className="text-white/90">Low</p>
+                      <p className="text-white">Low</p>
                     </div>
                   </div>
                 </div>
@@ -140,15 +143,15 @@ const Index = () => {
                   <div className="grid grid-cols-3 gap-2 mt-1">
                     <div>
                       <p className="text-xs text-white/50">Damage</p>
-                      <p className="text-white/90">49</p>
+                      <p className="text-white">49</p>
                     </div>
                     <div>
                       <p className="text-xs text-white/50">Fire Rate</p>
-                      <p className="text-white/90">Medium</p>
+                      <p className="text-white">Medium</p>
                     </div>
                     <div>
                       <p className="text-xs text-white/50">Recoil</p>
-                      <p className="text-white/90">High</p>
+                      <p className="text-white">High</p>
                     </div>
                   </div>
                 </div>
@@ -161,15 +164,15 @@ const Index = () => {
                   <div className="grid grid-cols-3 gap-2 mt-1">
                     <div>
                       <p className="text-xs text-white/50">Damage</p>
-                      <p className="text-white/90">120</p>
+                      <p className="text-white">120</p>
                     </div>
                     <div>
                       <p className="text-xs text-white/50">Fire Rate</p>
-                      <p className="text-white/90">Low</p>
+                      <p className="text-white">Low</p>
                     </div>
                     <div>
                       <p className="text-xs text-white/50">Range</p>
-                      <p className="text-white/90">Very High</p>
+                      <p className="text-white">Very High</p>
                     </div>
                   </div>
                 </div>
@@ -179,15 +182,15 @@ const Index = () => {
                   <div className="grid grid-cols-3 gap-2 mt-1">
                     <div>
                       <p className="text-xs text-white/50">Damage</p>
-                      <p className="text-white/90">75</p>
+                      <p className="text-white">75</p>
                     </div>
                     <div>
                       <p className="text-xs text-white/50">Fire Rate</p>
-                      <p className="text-white/90">Low</p>
+                      <p className="text-white">Low</p>
                     </div>
                     <div>
                       <p className="text-xs text-white/50">Range</p>
-                      <p className="text-white/90">High</p>
+                      <p className="text-white">High</p>
                     </div>
                   </div>
                 </div>
@@ -195,17 +198,17 @@ const Index = () => {
               <div className="bg-bgmi-darker p-4 rounded-lg border border-bgmi-blue/20">
                 <h3 className="text-bgmi-blue font-medium mb-2">Recommended Loadouts</h3>
                 <div className="mb-3">
-                  <p className="text-white font-medium">Aggressive Player</p>
+                  <p className="text-white font-medium">Close-Range Combat</p>
                   <p className="text-white/70 text-sm">M416 + UMP45</p>
                   <p className="text-white/60 text-xs mt-1">Perfect for close to mid-range fights in urban areas</p>
                 </div>
                 <div className="mb-3">
-                  <p className="text-white font-medium">Sniper Player</p>
+                  <p className="text-white font-medium">Long-Range Combat</p>
                   <p className="text-white/70 text-sm">Kar98k + M416</p>
                   <p className="text-white/60 text-xs mt-1">Versatile for all engagement distances</p>
                 </div>
                 <div>
-                  <p className="text-white font-medium">Support Player</p>
+                  <p className="text-white font-medium">Balanced Playstyle</p>
                   <p className="text-white/70 text-sm">DP-28 + SKS</p>
                   <p className="text-white/60 text-xs mt-1">Great for suppressive fire and medium range support</p>
                 </div>
@@ -213,6 +216,12 @@ const Index = () => {
             </div>
           </div>
         );
+      case 'heatmap':
+        return <HeatMap />;
+      case 'discord':
+        return <DiscordIntegration />;
+      case 'rewards':
+        return <RewardsSystem />;
       default:
         return null;
     }

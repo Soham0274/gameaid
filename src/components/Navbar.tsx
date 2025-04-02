@@ -25,11 +25,14 @@ const Navbar: React.FC<NavbarProps> = ({
     { id: 'dashboard', label: 'Dashboard' },
     { id: 'stats', label: 'Stats' },
     { id: 'guides', label: 'Guides' },
-    { id: 'weapons', label: 'Weapons' }
+    { id: 'weapons', label: 'Weapons' },
+    { id: 'heatmap', label: 'Heatmap' },
+    { id: 'discord', label: 'Discord' },
+    { id: 'rewards', label: 'Rewards' }
   ];
 
   return (
-    <header className="border-b border-bgmi-blue/20 bg-bgmi-dark/80 backdrop-blur-md sticky top-0 z-50">
+    <header className="border-b border-bgmi-blue/20 bg-bgmi-dark/90 backdrop-blur-md sticky top-0 z-50">
       <div className="container flex h-16 items-center justify-between">
         <div className="flex items-center gap-2">
           <Menu className="h-6 w-6 text-bgmi-blue md:hidden" />
@@ -39,15 +42,15 @@ const Navbar: React.FC<NavbarProps> = ({
           </div>
         </div>
         
-        <div className="hidden md:flex items-center gap-6">
+        <div className="hidden md:flex items-center gap-4 overflow-x-auto">
           {tabs.map(tab => (
             <button 
               key={tab.id}
               className={cn(
-                "text-sm font-medium transition-colors",
+                "text-sm font-medium transition-colors px-1 py-1 whitespace-nowrap",
                 activeTab === tab.id 
                   ? "text-bgmi-blue border-b-2 border-bgmi-blue" 
-                  : "text-white/70 hover:text-bgmi-blue"
+                  : "text-white hover:text-bgmi-blue"
               )}
               onClick={() => onTabChange(tab.id)}
             >
@@ -62,28 +65,32 @@ const Navbar: React.FC<NavbarProps> = ({
             <input
               type="search"
               placeholder="Search stats, weapons..."
-              className="bg-bgmi-dark border border-bgmi-blue/30 rounded-md h-9 w-[200px] pl-8 text-sm focus:outline-none focus:ring-1 focus:ring-bgmi-blue"
+              className="bg-bgmi-dark border border-bgmi-blue/30 rounded-md h-9 w-[200px] pl-8 text-sm text-white focus:outline-none focus:ring-1 focus:ring-bgmi-blue"
             />
           </div>
           
           {!isLoggedIn && questionsLeft !== undefined && (
-            <div className="text-xs text-white/70">
+            <div className="text-xs text-white">
               <span className="font-medium text-bgmi-blue">{questionsLeft}</span> questions left
             </div>
           )}
           
           {isLoggedIn ? (
             <div className="flex items-center gap-2">
-              <Button variant="outline" className="flex items-center gap-2 border-bgmi-blue/30 text-white">
+              <Button variant="outline" className="flex items-center gap-2 border-bgmi-blue/30 text-white bg-bgmi-dark/90">
                 <User className="h-4 w-4 text-bgmi-blue" />
                 <span>Profile</span>
               </Button>
-              <Button variant="ghost" size="icon" onClick={onLogout} className="text-white/70 hover:text-bgmi-blue">
+              <Button variant="ghost" size="icon" onClick={onLogout} className="text-white hover:text-bgmi-blue">
                 <LogOut className="h-4 w-4" />
               </Button>
             </div>
           ) : (
-            <Button variant="outline" className="neon-button" onClick={onLoginClick}>
+            <Button 
+              variant="outline" 
+              className="neon-button bg-bgmi-dark/90 text-white" 
+              onClick={onLoginClick}
+            >
               <User className="h-4 w-4 mr-2" />
               <span>Login</span>
             </Button>

@@ -97,8 +97,31 @@
   }
 
   body {
-    @apply bg-bgmi-darker text-foreground;
+    @apply bg-bgmi-darker text-white;
     background-image: radial-gradient(circle at 50% 50%, rgba(123, 104, 238, 0.05) 0%, transparent 80%);
+  }
+  
+  /* Ensure text is consistently visible against dark backgrounds */
+  p, h1, h2, h3, h4, h5, h6, span, div {
+    @apply text-white;
+  }
+  
+  /* Specific text classes that need lighter opacity but still visible */
+  .text-white\/70 {
+    @apply text-white opacity-70;
+  }
+  
+  .text-white\/60 {
+    @apply text-white opacity-60;
+  }
+  
+  .text-white\/50 {
+    @apply text-white opacity-50;
+  }
+  
+  /* Ensure readable input text */
+  input, select, textarea {
+    @apply text-white placeholder:text-white/50;
   }
 }
 
