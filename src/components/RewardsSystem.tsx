@@ -2,184 +2,147 @@
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
-import { Trophy, Award, Star, Users, Gift } from 'lucide-react';
+import { Gift, Trophy, Star, Award, ShieldCheck } from 'lucide-react';
 
 const RewardsSystem = () => {
-  const [userLevel, setUserLevel] = useState(3);
-  const [userPoints, setUserPoints] = useState(275);
-  const nextLevelPoints = 400;
-  const progress = (userPoints / nextLevelPoints) * 100;
+  const [currentPoints, setCurrentPoints] = useState(350);
+  const totalPointsNeeded = 1000;
+  const progressPercentage = (currentPoints / totalPointsNeeded) * 100;
   
-  const leaderboard = [
-    { rank: 1, username: "ProGamer123", points: 1250, badges: 8 },
-    { rank: 2, username: "SniperElite", points: 1120, badges: 7 },
-    { rank: 3, username: "TacticalPlayer", points: 950, badges: 6 },
-    { rank: 4, username: "StealthMode", points: 820, badges: 5 },
-    { rank: 5, username: "BattleWinner", points: 710, badges: 5 },
-    { rank: 6, username: "You", points: 275, badges: 3 },
-    { rank: 7, username: "FragMaster", points: 240, badges: 2 },
-    { rank: 8, username: "GunSlinger", points: 180, badges: 1 },
+  const [claimedRewards, setClaimedRewards] = useState<string[]>([]);
+  
+  const rewards = [
+    { id: 'daily_login', title: 'Daily Login', points: 10, description: 'Log in daily to earn points', icon: <ShieldCheck className="h-4 w-4 text-bgmi-blue" /> },
+    { id: 'weapon_guide', title: 'Weapon Guide', points: 100, description: 'Unlock exclusive weapon guide', icon: <Star className="h-4 w-4 text-bgmi-blue" /> },
+    { id: 'premium_skin', title: 'Premium Skin', points: 350, description: 'Claim a premium skin code', icon: <Award className="h-4 w-4 text-bgmi-blue" /> },
+    { id: 'season_pass', title: 'Season Pass', points: 1000, description: 'Get a free season pass', icon: <Trophy className="h-4 w-4 text-bgmi-purple" /> },
   ];
   
-  const availableBadges = [
-    { id: 1, name: "Sharpshooter", icon: "🎯", description: "Achieve 80% accuracy in 5 consecutive matches", earned: true },
-    { id: 2, name: "Survivor", icon: "🛡️", description: "Reach top 10 in 10 consecutive matches", earned: true },
-    { id: 3, name: "Demolition Expert", icon: "💣", description: "Get 5 grenade kills in a single match", earned: true },
-    { id: 4, name: "Squad Leader", icon: "👑", description: "Win 5 squad matches as the team MVP", earned: false },
-    { id: 5, name: "Marksman", icon: "🔫", description: "Get 10 headshot kills in a single match", earned: false },
-    { id: 6, name: "Strategist", icon: "🧠", description: "Win a match without killing anyone", earned: false },
-    { id: 7, name: "Vehicle Master", icon: "🚗", description: "Get 3 roadkills in a single match", earned: false },
-    { id: 8, name: "Ghost", icon: "👻", description: "Win a match without taking damage", earned: false },
-  ];
+  const handleClaimReward = (id: string, points: number) => {
+    if (!claimedRewards.includes(id) && currentPoints >= points) {
+      setClaimedRewards([...claimedRewards, id]);
+    }
+  };
   
-  const rewardTiers = [
-    { level: 1, reward: "Basic Loadout Tips", icon: "📋", claimed: true },
-    { level: 2, reward: "Early Game Strategies Guide", icon: "🗺️", claimed: true },
-    { level: 3, reward: "Exclusive Weapon Stats", icon: "📊", claimed: true },
-    { level: 5, reward: "Advanced Tactics Video", icon: "🎬", claimed: false },
-    { level: 7, reward: "Pro Player Loadouts", icon: "⚔️", claimed: false },
-    { level: 10, reward: "1-on-1 Coaching Session", icon: "👨‍🏫", claimed: false },
-  ];
-  
-  const dailyTasks = [
-    { id: 1, name: "Ask 3 questions to GameAid", points: 15, completed: true },
-    { id: 2, name: "Review your match statistics", points: 10, completed: true },
-    { id: 3, name: "Try a recommended loadout", points: 20, completed: false },
-    { id: 4, name: "Share your stats on Discord", points: 25, completed: false },
-  ];
+  const getRank = (points: number) => {
+    if (points < 100) return 'Bronze';
+    if (points < 300) return 'Silver';
+    if (points < 600) return 'Gold';
+    if (points < 1000) return 'Platinum';
+    return 'Diamond';
+  };
   
   return (
     <div className="p-6 bg-bgmi-dark border border-bgmi-blue/20 rounded-lg">
       <h2 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
-        <Trophy className="h-5 w-5 text-bgmi-blue" />
+        <Gift className="h-5 w-5 text-bgmi-blue" />
         Rewards System
       </h2>
       
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <div className="lg:col-span-2 space-y-6">
-          <div className="bg-bgmi-darker p-4 rounded-lg border border-bgmi-blue/20">
-            <div className="flex justify-between items-center mb-3">
-              <div>
-                <p className="text-white/70 text-sm">Current Level</p>
-                <p className="text-white font-bold text-xl">{userLevel}</p>
-              </div>
-              <div className="text-right">
-                <p className="text-white/70 text-sm">Points</p>
-                <p className="text-white font-bold text-xl">{userPoints} / {nextLevelPoints}</p>
-              </div>
-            </div>
-            <Progress value={progress} className="h-2 bg-white/10" indicatorClassName="bg-gradient-to-r from-bgmi-blue to-blue-400" />
-            <p className="text-white/50 text-xs mt-2">{Math.ceil(nextLevelPoints - userPoints)} points needed for level {userLevel + 1}</p>
+        <div className="lg:col-span-1 bg-bgmi-darker p-5 rounded-lg border border-bgmi-blue/20">
+          <div className="text-center mb-4">
+            <h3 className="text-white font-medium">Your Points</h3>
+            <p className="text-2xl font-bold text-bgmi-blue">{currentPoints}</p>
+            <p className="text-white/70 text-sm">Rank: {getRank(currentPoints)}</p>
           </div>
           
-          <div className="bg-bgmi-darker p-4 rounded-lg border border-bgmi-blue/20">
-            <h3 className="text-bgmi-blue font-medium mb-3 flex items-center gap-2">
-              <Award className="h-4 w-4" />
-              Badges & Achievements
-            </h3>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3">
-              {availableBadges.slice(0, 4).map((badge) => (
-                <div key={badge.id} className={`p-3 rounded border ${badge.earned ? 'bg-bgmi-blue/10 border-bgmi-blue/30' : 'bg-white/5 border-white/10'} text-center`}>
-                  <div className="text-2xl mb-1">{badge.icon}</div>
-                  <p className={`font-medium ${badge.earned ? 'text-white' : 'text-white/50'}`}>{badge.name}</p>
-                  <p className="text-xs text-white/60 mt-1">{badge.description}</p>
-                </div>
-              ))}
+          <div className="space-y-2">
+            <div className="flex justify-between text-xs text-white/70">
+              <span>Progress to Next Rank</span>
+              <span>{currentPoints}/{totalPointsNeeded}</span>
             </div>
-            <div className="mt-3 text-center">
-              <Button variant="outline" size="sm" className="text-white/70 border-bgmi-blue/30">
-                View All Badges
-              </Button>
-            </div>
+            <Progress 
+              value={progressPercentage} 
+              className="h-2 bg-bgmi-dark/50"
+            />
           </div>
           
-          <div className="bg-bgmi-darker p-4 rounded-lg border border-bgmi-blue/20">
-            <h3 className="text-bgmi-blue font-medium mb-3 flex items-center gap-2">
-              <Star className="h-4 w-4" />
-              Daily Tasks
-            </h3>
-            <div className="space-y-3">
-              {dailyTasks.map((task) => (
-                <div key={task.id} className="flex justify-between items-center p-3 rounded border border-white/10 bg-white/5">
-                  <div className="flex items-center gap-3">
-                    <div className={`h-4 w-4 rounded-full border ${task.completed ? 'bg-bgmi-blue border-bgmi-blue/30' : 'bg-transparent border-white/30'} flex items-center justify-center`}>
-                      {task.completed && <div className="h-2 w-2 rounded-full bg-white"></div>}
-                    </div>
-                    <p className={`text-sm ${task.completed ? 'text-white/50 line-through' : 'text-white'}`}>{task.name}</p>
-                  </div>
-                  <div className="text-xs font-medium text-bgmi-blue">+{task.points} pts</div>
+          <div className="mt-6 space-y-4">
+            <h4 className="text-white font-medium mb-2">Earn Points</h4>
+            <div className="space-y-2">
+              {[
+                { action: "Daily Login", points: 10 },
+                { action: "Complete a Match", points: 15 },
+                { action: "Win a Match", points: 25 },
+                { action: "Share on Social", points: 20 },
+                { action: "Invite a Friend", points: 50 }
+              ].map((item) => (
+                <div key={item.action} className="flex justify-between bg-bgmi-dark p-2 rounded border border-bgmi-blue/10">
+                  <p className="text-white/90 text-sm">{item.action}</p>
+                  <p className="text-bgmi-blue text-sm font-medium">+{item.points}</p>
                 </div>
               ))}
             </div>
           </div>
         </div>
         
-        <div className="space-y-6">
-          <div className="bg-bgmi-darker p-4 rounded-lg border border-bgmi-blue/20">
-            <h3 className="text-bgmi-blue font-medium mb-3 flex items-center gap-2">
-              <Users className="h-4 w-4" />
-              Leaderboard
-            </h3>
-            <div className="space-y-2">
-              {leaderboard.map((player) => (
+        <div className="lg:col-span-2 bg-bgmi-darker p-5 rounded-lg border border-bgmi-blue/20">
+          <h3 className="text-white font-medium mb-4">Available Rewards</h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {rewards.map((reward) => {
+              const isAvailable = currentPoints >= reward.points;
+              const isClaimed = claimedRewards.includes(reward.id);
+              
+              return (
                 <div 
-                  key={player.rank} 
-                  className={`flex justify-between items-center p-2 rounded ${player.username === "You" ? 'bg-bgmi-blue/10 border border-bgmi-blue/30' : ''}`}
+                  key={reward.id} 
+                  className={`bg-bgmi-dark p-4 rounded-lg border ${
+                    isClaimed ? 'border-green-500/30' : isAvailable ? 'border-bgmi-blue/30' : 'border-white/10'
+                  }`}
                 >
-                  <div className="flex items-center gap-2">
-                    <span className={`text-sm font-mono w-5 text-center ${player.rank <= 3 ? 'text-yellow-400' : 'text-white/50'}`}>
-                      {player.rank}
-                    </span>
-                    <span className={`text-sm ${player.username === "You" ? 'text-white font-medium' : 'text-white/90'}`}>
-                      {player.username}
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <span className="text-xs text-white/70">
-                      <Trophy className="h-3 w-3 inline mr-1 text-bgmi-blue" />
-                      {player.badges}
-                    </span>
-                    <span className="text-xs font-medium text-white">
-                      {player.points} pts
+                  <div className="flex justify-between items-start mb-3">
+                    <div className="flex items-center gap-2">
+                      {reward.icon}
+                      <h4 className="text-white font-medium">{reward.title}</h4>
+                    </div>
+                    <span className="text-xs font-medium px-2 py-1 rounded bg-bgmi-dark/50 border border-bgmi-blue/20">
+                      {reward.points} pts
                     </span>
                   </div>
+                  <p className="text-white/70 text-sm mb-3">{reward.description}</p>
+                  <Button
+                    variant={isClaimed ? "outline" : "default"}
+                    size="sm"
+                    className={`w-full ${
+                      isClaimed 
+                        ? 'border-green-500/30 text-green-500 hover:bg-green-500/10' 
+                        : isAvailable 
+                          ? 'neon-button' 
+                          : 'bg-bgmi-dark/50 text-white/50 border-white/10 cursor-not-allowed'
+                    }`}
+                    disabled={!isAvailable || isClaimed}
+                    onClick={() => handleClaimReward(reward.id, reward.points)}
+                  >
+                    {isClaimed ? 'Claimed' : isAvailable ? 'Claim Reward' : 'Locked'}
+                  </Button>
                 </div>
-              ))}
-            </div>
+              );
+            })}
           </div>
           
-          <div className="bg-bgmi-darker p-4 rounded-lg border border-bgmi-blue/20">
-            <h3 className="text-bgmi-blue font-medium mb-3 flex items-center gap-2">
-              <Gift className="h-4 w-4" />
-              Reward Tiers
-            </h3>
-            <div className="space-y-3">
-              {rewardTiers.map((tier) => (
-                <div key={tier.level} className="flex justify-between items-center p-2 rounded border border-white/10 bg-white/5">
-                  <div className="flex items-center gap-2">
-                    <div className={`h-7 w-7 rounded-full flex items-center justify-center ${tier.level <= userLevel ? 'bg-bgmi-blue/20 text-bgmi-blue' : 'bg-white/10 text-white/30'}`}>
-                      {tier.level}
-                    </div>
-                    <div>
-                      <p className={`text-sm ${tier.level <= userLevel ? 'text-white' : 'text-white/50'}`}>
-                        {tier.reward}
-                      </p>
-                      <p className="text-xs text-white/50">Level {tier.level} reward</p>
-                    </div>
+          <div className="mt-6 bg-bgmi-dark/50 p-4 rounded-md border border-bgmi-blue/10">
+            <h4 className="text-white font-medium mb-2">Leaderboard</h4>
+            <div className="space-y-2">
+              {[
+                { rank: 1, name: "ProGamer123", points: 1520 },
+                { rank: 2, name: "SniperElite", points: 1320 },
+                { rank: 3, name: "BattleMaster", points: 1150 },
+                { rank: 4, name: "TacticalPlayer", points: 980 },
+                { rank: 5, name: "ShroudFan", points: 920 }
+              ].map((player) => (
+                <div key={player.rank} className="flex justify-between items-center bg-bgmi-dark p-2 rounded border border-bgmi-blue/10">
+                  <div className="flex items-center gap-3">
+                    <span className={`w-5 h-5 flex items-center justify-center rounded-full text-xs
+                      ${player.rank === 1 ? 'bg-yellow-500/20 text-yellow-500' : 
+                        player.rank === 2 ? 'bg-gray-400/20 text-gray-400' : 
+                        player.rank === 3 ? 'bg-amber-700/20 text-amber-700' : 'bg-bgmi-blue/20 text-bgmi-blue'
+                      }`}>
+                      {player.rank}
+                    </span>
+                    <p className="text-white text-sm">{player.name}</p>
                   </div>
-                  <div>
-                    {tier.level <= userLevel ? (
-                      tier.claimed ? (
-                        <span className="text-xs text-white/50">Claimed</span>
-                      ) : (
-                        <Button variant="outline" size="sm" className="h-7 text-xs border-bgmi-blue/30 text-bgmi-blue hover:text-white hover:bg-bgmi-blue/20">
-                          Claim
-                        </Button>
-                      )
-                    ) : (
-                      <span className="text-xs text-white/50">Locked</span>
-                    )}
-                  </div>
+                  <p className="text-bgmi-blue text-sm font-medium">{player.points}</p>
                 </div>
               ))}
             </div>

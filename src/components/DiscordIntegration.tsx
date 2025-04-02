@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Discord, ExternalLink, Copy } from 'lucide-react';
+import { MessageSquare, ExternalLink, Copy } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
 const DiscordIntegration = () => {
@@ -38,7 +38,7 @@ const DiscordIntegration = () => {
   return (
     <div className="p-6 bg-bgmi-dark border border-bgmi-blue/20 rounded-lg">
       <h2 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
-        <Discord className="h-5 w-5 text-bgmi-blue" />
+        <MessageSquare className="h-5 w-5 text-bgmi-blue" />
         Discord Integration
       </h2>
       
@@ -57,7 +57,7 @@ const DiscordIntegration = () => {
               onClick={handleLink} 
               className="w-full neon-button"
             >
-              <Discord className="h-4 w-4 mr-2" />
+              <MessageSquare className="h-4 w-4 mr-2" />
               Link Discord Account
             </Button>
           </div>
