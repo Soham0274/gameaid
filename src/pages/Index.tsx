@@ -22,7 +22,7 @@ const Index = () => {
     setQuestionsLeft(Infinity);
     toast({
       title: "Login Successful",
-      description: "You now have unlimited access to BGMI Buddy!",
+      description: "You now have unlimited access to GameAid!",
       variant: "default",
     });
   };

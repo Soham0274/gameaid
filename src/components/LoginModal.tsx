@@ -28,13 +28,13 @@ const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, onSuccess }) =
       <DialogContent className="bg-bgmi-dark border border-bgmi-blue/30 text-white sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle className="text-white flex items-center justify-between">
-            <span className="text-glow text-bgmi-blue">BGMI Buddy</span>
+            <span className="text-glow text-bgmi-blue">GameAid</span>
             <Button variant="ghost" className="h-6 w-6 p-0" onClick={onClose}>
               <X className="h-4 w-4 text-white/70" />
             </Button>
           </DialogTitle>
           <DialogDescription className="text-white/70">
-            Join now for unlimited AI-powered BGMI game insights!
+            Join now for unlimited AI-powered game insights!
           </DialogDescription>
         </DialogHeader>
         
@@ -83,8 +83,8 @@ const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, onSuccess }) =
                 <Input id="reg-password" type="password" className="bg-bgmi-darker border-bgmi-blue/30 text-white" required />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="bgmi-id" className="text-white">BGMI ID (Optional)</Label>
-                <Input id="bgmi-id" placeholder="Your BGMI ID" className="bg-bgmi-darker border-bgmi-blue/30 text-white" />
+                <Label htmlFor="game-id" className="text-white">Game ID (Optional)</Label>
+                <Input id="game-id" placeholder="Your Game ID" className="bg-bgmi-darker border-bgmi-blue/30 text-white" />
               </div>
               <Button type="submit" className="w-full neon-button flex items-center gap-2">
                 <UserPlus className="h-4 w-4" />

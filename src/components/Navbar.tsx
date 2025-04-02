@@ -16,8 +16,8 @@ const Navbar: React.FC<NavbarProps> = ({ onLoginClick, questionsLeft }) => {
         <div className="flex items-center gap-2">
           <Menu className="h-6 w-6 text-bgmi-blue md:hidden" />
           <div className="flex items-center gap-1">
-            <span className="font-bold text-2xl text-white">BGMI</span>
-            <span className="font-bold text-2xl text-bgmi-blue text-glow">Buddy</span>
+            <span className="font-bold text-2xl text-white">Game</span>
+            <span className="font-bold text-2xl text-bgmi-blue text-glow">Aid</span>
           </div>
         </div>
         

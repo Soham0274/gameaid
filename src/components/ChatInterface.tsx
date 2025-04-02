@@ -14,7 +14,7 @@ interface Message {
 const INITIAL_MESSAGES: Message[] = [
   {
     id: '1',
-    content: "👋 Welcome to BGMI Buddy! I can help you improve your gameplay with stats analysis, weapon recommendations, and tactics. What would you like to know?",
+    content: "👋 Welcome to GameAid! I can help you improve your gameplay with stats analysis, weapon recommendations, and tactics. What would you like to know?",
     sender: 'bot',
     timestamp: new Date(),
   },
@@ -101,7 +101,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
       <div className="p-4 border-b border-bgmi-blue/20 flex justify-between items-center">
         <div className="flex items-center">
           <div className="h-2 w-2 rounded-full bg-bgmi-blue animate-pulse mr-2"></div>
-          <h2 className="font-semibold text-white">BGMI Assistant</h2>
+          <h2 className="font-semibold text-white">GameAid Assistant</h2>
         </div>
         <div className="flex gap-2">
           <Button variant="outline" size="icon" className="h-8 w-8 rounded-full bg-transparent border border-bgmi-blue/30">
@@ -153,7 +153,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
             <Mic className="h-4 w-4 text-bgmi-blue" />
           </Button>
           <Input
-            placeholder={isLoggedIn ? "Ask me anything about BGMI..." : `Ask me (${questionsLeft} questions left)...`}
+            placeholder={isLoggedIn ? "Ask me anything about your game..." : `Ask me (${questionsLeft} questions left)...`}
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={handleKeyPress}
