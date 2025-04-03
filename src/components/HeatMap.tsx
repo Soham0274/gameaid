@@ -15,11 +15,12 @@ const HeatMap: React.FC<HeatMapProps> = ({
 }) => {
   const [selectedMap, setSelectedMap] = useState("erangel");
   
+  // Updated with direct URLs to ensure images are visible
   const mapImages = {
-    erangel: "https://media.discordapp.net/attachments/1232390066248175647/1232390249582788688/erangel-heatmap.jpg?ex=662d3be6&is=662bea66&hm=8e03c94845c7fd407dfb87ef55e5f4a75c3c3b4afac98abce73dc371c8732881&=&format=webp&quality=lossless&width=671&height=671",
-    miramar: "https://media.discordapp.net/attachments/1232390066248175647/1232390249909940345/miramar-heatmap.jpg?ex=662d3be6&is=662bea66&hm=1e3b5bcbde654a3db25efb29f51e0d83c54a22b2b5e3cf2af1ffd7d3ef5b5d4e&=&format=webp&quality=lossless&width=671&height=671",
-    sanhok: "https://media.discordapp.net/attachments/1232390066248175647/1232390250316787833/sanhok-heatmap.jpg?ex=662d3be6&is=662bea66&hm=5abd7d95d8db18bba06a3cc7f0702fea3f98adba6b72d7a1a8d4bc7db4a56d5e&=&format=webp&quality=lossless&width=671&height=671",
-    vikendi: "https://media.discordapp.net/attachments/1232390066248175647/1232390250731458630/vikendi-heatmap.jpg?ex=662d3be6&is=662bea66&hm=a92f11bcf151f06d2e04deeb4f24b42c7baec1e835c40a44c9bb9a21ae64c9fb&=&format=webp&quality=lossless&width=671&height=671"
+    erangel: "https://media.discordapp.net/attachments/1232390066248175647/1232390249582788688/erangel-heatmap.jpg",
+    miramar: "https://media.discordapp.net/attachments/1232390066248175647/1232390249909940345/miramar-heatmap.jpg",
+    sanhok: "https://media.discordapp.net/attachments/1232390066248175647/1232390250316787833/sanhok-heatmap.jpg",
+    vikendi: "https://media.discordapp.net/attachments/1232390066248175647/1232390250731458630/vikendi-heatmap.jpg"
   };
   
   // Location data for each map
@@ -108,10 +109,17 @@ const HeatMap: React.FC<HeatMapProps> = ({
       
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div className="bg-bgmi-darker p-4 rounded-lg border border-bgmi-blue/20 transition-all duration-300 hover:border-bgmi-blue/50">
+          {/* Added specific width/height, alt text and error handling for images */}
           <img 
             src={mapImages[selectedMap as keyof typeof mapImages]} 
-            alt={`${selectedMap} heatmap`} 
+            alt={`${selectedMap.charAt(0).toUpperCase() + selectedMap.slice(1)} heatmap`} 
             className="w-full h-auto rounded border border-bgmi-blue/20"
+            width="671"
+            height="671"
+            onError={(e) => {
+              console.error(`Failed to load image for ${selectedMap}`);
+              e.currentTarget.src = "https://placehold.co/671x671/0f172a/4d7fea?text=Map+Image+Unavailable";
+            }}
           />
           <p className="text-xs text-white mt-2 text-center bg-bgmi-dark px-2 py-1 rounded">Heatmap showing drop frequency and player density</p>
         </div>
