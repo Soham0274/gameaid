@@ -1,512 +1,460 @@
-
 export interface Weapon {
   id: string;
   name: string;
-  type: 'AR' | 'SMG' | 'Sniper' | 'DMR' | 'Shotgun' | 'LMG' | 'Pistol' | 'Melee' | 'Throwable';
+  type: string;
   damage: number;
-  fireRate: 'Very Low' | 'Low' | 'Medium' | 'High' | 'Very High';
-  recoil: 'Very Low' | 'Low' | 'Medium' | 'High' | 'Very High';
-  range: 'Very Low' | 'Low' | 'Medium' | 'High' | 'Very High';
+  fireRate: number;
+  recoil: string;
+  range: string;
   description: string;
 }
 
 const weapons: Weapon[] = [
   // Assault Rifles
   {
-    id: 'ar-m416',
-    name: 'M416',
-    type: 'AR',
-    damage: 41,
-    fireRate: 'High',
-    recoil: 'Low',
-    range: 'Medium',
-    description: 'Best all-rounder with excellent recoil control and attachment slots'
-  },
-  {
-    id: 'ar-akm',
-    name: 'AKM',
-    type: 'AR',
+    id: "akm",
+    name: "AKM",
+    type: "Assault Rifle",
     damage: 49,
-    fireRate: 'Medium',
-    recoil: 'High',
-    range: 'Medium',
-    description: 'High damage but difficult recoil pattern'
+    fireRate: 0.1,
+    recoil: "High",
+    range: "Medium",
+    description: "Powerful 7.62mm assault rifle with high damage and recoil."
   },
   {
-    id: 'ar-beryl',
-    name: 'Beryl M762',
-    type: 'AR',
-    damage: 46,
-    fireRate: 'High',
-    recoil: 'Very High',
-    range: 'Medium',
-    description: 'Highest DPS assault rifle with challenging recoil'
+    id: "m416",
+    name: "M416",
+    type: "Assault Rifle",
+    damage: 43,
+    fireRate: 0.086,
+    recoil: "Medium",
+    range: "Medium",
+    description: "Versatile 5.56mm assault rifle with good stability and customization options."
   },
   {
-    id: 'ar-g36c',
-    name: 'G36C',
-    type: 'AR',
-    damage: 41,
-    fireRate: 'High',
-    recoil: 'Low',
-    range: 'Medium',
-    description: 'Vikendi exclusive AR with balanced performance'
+    id: "scar_l",
+    name: "SCAR-L",
+    type: "Assault Rifle",
+    damage: 43,
+    fireRate: 0.096,
+    recoil: "Medium",
+    range: "Medium",
+    description: "Accurate 5.56mm assault rifle with manageable recoil."
   },
   {
-    id: 'ar-groza',
-    name: 'Groza',
-    type: 'AR',
+    id: "aug",
+    name: "AUG",
+    type: "Assault Rifle",
+    damage: 43,
+    fireRate: 0.086,
+    recoil: "Low",
+    range: "Medium",
+    description: "Accurate 5.56mm assault rifle with low recoil, found in air drops."
+  },
+  {
+    id: "groza",
+    name: "Groza",
+    type: "Assault Rifle",
     damage: 49,
-    fireRate: 'Very High',
-    recoil: 'Medium',
-    range: 'Medium',
-    description: 'Airdrop-only weapon with exceptional close-range performance'
+    fireRate: 0.08,
+    recoil: "High",
+    range: "Medium",
+    description: "High-damage 7.62mm assault rifle with a high fire rate, found in air drops."
   },
   {
-    id: 'ar-aug',
-    name: 'AUG A3',
-    type: 'AR',
-    damage: 41,
-    fireRate: 'High',
-    recoil: 'Very Low',
-    range: 'High',
-    description: 'Airdrop-only weapon with minimal recoil and excellent accuracy'
+    id: "beryl_m762",
+    name: "Beryl M762",
+    type: "Assault Rifle",
+    damage: 47,
+    fireRate: 0.086,
+    recoil: "High",
+    range: "Medium",
+    description: "7.62mm assault rifle with high damage and a high rate of fire, but difficult to control."
   },
   {
-    id: 'ar-scar',
-    name: 'SCAR-L',
-    type: 'AR',
-    damage: 41,
-    fireRate: 'Medium',
-    recoil: 'Low',
-    range: 'Medium',
-    description: 'Reliable assault rifle with easy recoil pattern'
-  },
-  {
-    id: 'ar-qbz',
-    name: 'QBZ95',
-    type: 'AR',
-    damage: 41,
-    fireRate: 'Medium',
-    recoil: 'Low',
-    range: 'Medium',
-    description: 'Sanhok exclusive AR with high accuracy'
-  },
-
-  // SMGs
-  {
-    id: 'smg-ump45',
-    name: 'UMP45',
-    type: 'SMG',
-    damage: 39,
-    fireRate: 'Medium',
-    recoil: 'Very Low',
-    range: 'Low',
-    description: 'Versatile SMG effective at close to medium range'
-  },
-  {
-    id: 'smg-vector',
-    name: 'Vector',
-    type: 'SMG',
-    damage: 31,
-    fireRate: 'Very High',
-    recoil: 'Low',
-    range: 'Very Low',
-    description: 'Highest rate of fire weapon with extended mag dependency'
-  },
-  {
-    id: 'smg-uzi',
-    name: 'Micro UZI',
-    type: 'SMG',
-    damage: 26,
-    fireRate: 'Very High',
-    recoil: 'Medium',
-    range: 'Very Low',
-    description: 'Close-range specialist with extreme fire rate'
-  },
-  {
-    id: 'smg-mp5k',
-    name: 'MP5K',
-    type: 'SMG',
-    damage: 33,
-    fireRate: 'High',
-    recoil: 'Very Low',
-    range: 'Low',
-    description: 'Vikendi exclusive SMG with excellent stability'
-  },
-  {
-    id: 'smg-thompson',
-    name: 'Tommy Gun',
-    type: 'SMG',
-    damage: 40,
-    fireRate: 'Medium',
-    recoil: 'Medium',
-    range: 'Low',
-    description: 'High damage SMG with limited attachment options'
-  },
-  {
-    id: 'smg-pp19',
-    name: 'PP-19 Bizon',
-    type: 'SMG',
-    damage: 35,
-    fireRate: 'Medium',
-    recoil: 'Very Low',
-    range: 'Low',
-    description: 'Large magazine capacity with decent overall performance'
+    id: "mk47_mutant",
+    name: "Mk47 Mutant",
+    type: "Assault Rifle",
+    damage: 49,
+    fireRate: 0.1,
+    recoil: "High",
+    range: "Long",
+    description: "7.62mm assault rifle that fires in two-round bursts or single shots, offering high damage at the cost of versatility."
   },
 
   // Sniper Rifles
   {
-    id: 'sniper-awm',
-    name: 'AWM',
-    type: 'Sniper',
-    damage: 120,
-    fireRate: 'Very Low',
-    recoil: 'High',
-    range: 'Very High',
-    description: 'Airdrop-only weapon that can one-shot level 3 helmets'
+    id: "awm",
+    name: "AWM",
+    type: "Sniper Rifle",
+    damage: 105,
+    fireRate: 1.85,
+    recoil: "High",
+    range: "Very Long",
+    description: "Extremely powerful sniper rifle that uses .300 Magnum ammo, found in air drops."
   },
   {
-    id: 'sniper-kar98k',
-    name: 'Kar98k',
-    type: 'Sniper',
+    id: "m24",
+    name: "M24",
+    type: "Sniper Rifle",
+    damage: 79,
+    fireRate: 2.0,
+    recoil: "High",
+    range: "Very Long",
+    description: "Bolt-action sniper rifle that uses 7.62mm ammo."
+  },
+  {
+    id: "kar98k",
+    name: "Kar98k",
+    type: "Sniper Rifle",
     damage: 75,
-    fireRate: 'Very Low',
-    recoil: 'Medium',
-    range: 'Very High',
-    description: 'Standard bolt-action sniper with high damage'
+    fireRate: 4.0,
+    recoil: "High",
+    range: "Very Long",
+    description: "Bolt-action sniper rifle that uses 7.62mm ammo."
   },
   {
-    id: 'sniper-m24',
-    name: 'M24',
-    type: 'Sniper',
-    damage: 79,
-    fireRate: 'Very Low',
-    recoil: 'Medium',
-    range: 'Very High',
-    description: 'Bolt-action sniper with higher damage than Kar98k'
+    id: "sks",
+    name: "SKS",
+    type: "Sniper Rifle",
+    damage: 55,
+    fireRate: 0.09,
+    recoil: "Medium",
+    range: "Long",
+    description: "Semi-automatic sniper rifle that uses 7.62mm ammo."
   },
   {
-    id: 'sniper-win94',
-    name: 'Win94',
-    type: 'Sniper',
-    damage: 66,
-    fireRate: 'Low',
-    recoil: 'Medium',
-    range: 'High',
-    description: 'Lever-action rifle with built-in 2.7x scope'
+    id: "mini_14",
+    name: "Mini 14",
+    type: "Sniper Rifle",
+    damage: 49,
+    fireRate: 0.1,
+    recoil: "Low",
+    range: "Long",
+    description: "Lightweight semi-automatic sniper rifle that uses 5.56mm ammo."
   },
   {
-    id: 'sniper-mosin',
-    name: 'Mosin Nagant',
-    type: 'Sniper',
-    damage: 79,
-    fireRate: 'Very Low',
-    recoil: 'Medium',
-    range: 'Very High',
-    description: 'Alternative to the M24 with nearly identical stats'
+    id: "vss",
+    name: "VSS",
+    type: "Sniper Rifle",
+    damage: 41,
+    fireRate: 0.086,
+    recoil: "Medium",
+    range: "Medium",
+    description: "Integrally suppressed sniper rifle that uses 9mm ammo."
+  },
+  {
+    id: "slr",
+    name: "SLR",
+    type: "Sniper Rifle",
+    damage: 58,
+    fireRate: 0.1,
+    recoil: "High",
+    range: "Long",
+    description: "Designated marksman rifle that uses 7.62mm ammo."
+  },
+    {
+    id: "mk14",
+    name: "Mk14",
+    type: "Sniper Rifle",
+    damage: 61,
+    fireRate: 0.09,
+    recoil: "High",
+    range: "Long",
+    description: "Designated marksman rifle that uses 7.62mm ammo, found in air drops."
   },
 
-  // DMRs
+  // Submachine Guns
   {
-    id: 'dmr-sks',
-    name: 'SKS',
-    type: 'DMR',
-    damage: 53,
-    fireRate: 'Medium',
-    recoil: 'High',
-    range: 'High',
-    description: 'Semi-automatic DMR with full attachment support'
-  },
-  {
-    id: 'dmr-slr',
-    name: 'SLR',
-    type: 'DMR',
-    damage: 58,
-    fireRate: 'Medium',
-    recoil: 'High',
-    range: 'High',
-    description: 'High damage DMR with more recoil than SKS'
-  },
-  {
-    id: 'dmr-mini14',
-    name: 'Mini-14',
-    type: 'DMR',
-    damage: 46,
-    fireRate: 'High',
-    recoil: 'Low',
-    range: 'High',
-    description: 'Fast-firing DMR with easy recoil control'
-  },
-  {
-    id: 'dmr-qbu',
-    name: 'QBU',
-    type: 'DMR',
-    damage: 48,
-    fireRate: 'Medium',
-    recoil: 'Low',
-    range: 'High',
-    description: 'Sanhok exclusive DMR with bipod for prone shooting'
-  },
-  {
-    id: 'dmr-mk12',
-    name: 'Mk12',
-    type: 'DMR',
-    damage: 44,
-    fireRate: 'High',
-    recoil: 'Low',
-    range: 'High',
-    description: 'Modern DMR with good attachment compatibility'
-  },
-  {
-    id: 'dmr-vss',
-    name: 'VSS',
-    type: 'DMR',
+    id: "ump45",
+    name: "UMP45",
+    type: "Submachine Gun",
     damage: 41,
-    fireRate: 'High',
-    recoil: 'Low',
-    range: 'Medium',
-    description: 'Integral suppressor and scope with subsonic ammo'
+    fireRate: 0.092,
+    recoil: "Low",
+    range: "Low",
+    description: "Versatile submachine gun that uses .45 ACP ammo."
+  },
+  {
+    id: "vector",
+    name: "Vector",
+    type: "Submachine Gun",
+    damage: 31,
+    fireRate: 0.055,
+    recoil: "Low",
+    range: "Low",
+    description: "High-rate-of-fire submachine gun that uses .45 ACP ammo."
+  },
+  {
+    id: "uzi",
+    name: "Uzi",
+    type: "Submachine Gun",
+    damage: 26,
+    fireRate: 0.048,
+    recoil: "Medium",
+    range: "Low",
+    description: "Fully automatic submachine gun that uses 9mm ammo."
+  },
+  {
+    id: "pp_19_bizon",
+    name: "PP-19 Bizon",
+    type: "Submachine Gun",
+    damage: 35,
+    fireRate: 0.076,
+    recoil: "Low",
+    range: "Low",
+    description: "Submachine gun with a large magazine that uses 9mm ammo."
+  },
+  {
+    id: "mp5k",
+    name: "MP5K",
+    type: "Submachine Gun",
+    damage: 33,
+    fireRate: 0.075,
+    recoil: "Low",
+    range: "Low",
+    description: "Submachine gun that uses 9mm ammo."
+  },
+  {
+    id: "p90",
+    name: "P90",
+    type: "Submachine Gun",
+    damage: 30,
+    fireRate: 0.07,
+    recoil: "Low",
+    range: "Low",
+    description: "Submachine gun that uses 5.7mm ammo, found in air drops."
+  },
+
+  // Light Machine Guns
+  {
+    id: "m249",
+    name: "M249",
+    type: "Light Machine Gun",
+    damage: 45,
+    fireRate: 0.075,
+    recoil: "High",
+    range: "Medium",
+    description: "Light machine gun with a large magazine that uses 5.56mm ammo, found in air drops."
+  },
+  {
+    id: "dp_28",
+    name: "DP-28",
+    type: "Light Machine Gun",
+    damage: 51,
+    fireRate: 0.109,
+    recoil: "Medium",
+    range: "Medium",
+    description: "Light machine gun that uses 7.62mm ammo."
   },
 
   // Shotguns
   {
-    id: 'shotgun-s12k',
-    name: 'S12K',
-    type: 'Shotgun',
-    damage: 198,
-    fireRate: 'Medium',
-    recoil: 'High',
-    range: 'Very Low',
-    description: 'Semi-automatic shotgun with magazine loading'
+    id: "s12k",
+    name: "S12K",
+    type: "Shotgun",
+    damage: 24,
+    fireRate: 0.25,
+    recoil: "High",
+    range: "Low",
+    description: "Semi-automatic shotgun that uses 12 gauge ammo."
   },
   {
-    id: 'shotgun-s686',
-    name: 'S686',
-    type: 'Shotgun',
-    damage: 216,
-    fireRate: 'Low',
-    recoil: 'Medium',
-    range: 'Very Low',
-    description: 'Double-barrel shotgun with high burst damage'
+    id: "s686",
+    name: "S686",
+    type: "Shotgun",
+    damage: 26,
+    fireRate: 0.2,
+    recoil: "High",
+    range: "Low",
+    description: "Double-barreled shotgun that uses 12 gauge ammo."
   },
   {
-    id: 'shotgun-s1897',
-    name: 'S1897',
-    type: 'Shotgun',
-    damage: 216,
-    fireRate: 'Low',
-    recoil: 'Medium',
-    range: 'Very Low',
-    description: 'Pump-action shotgun with reliable performance'
+    id: "s1897",
+    name: "S1897",
+    type: "Shotgun",
+    damage: 25,
+    fireRate: 0.4,
+    recoil: "High",
+    range: "Low",
+    description: "Pump-action shotgun that uses 12 gauge ammo."
   },
   {
-    id: 'shotgun-dbs',
-    name: 'DBS',
-    type: 'Shotgun',
-    damage: 216,
-    fireRate: 'Medium',
-    recoil: 'High',
-    range: 'Low',
-    description: 'Airdrop double-barrel shotgun with drum magazine'
-  },
-
-  // LMGs
-  {
-    id: 'lmg-m249',
-    name: 'M249',
-    type: 'LMG',
-    damage: 45,
-    fireRate: 'Very High',
-    recoil: 'High',
-    range: 'Medium',
-    description: 'High capacity LMG with excellent suppressive fire'
+    id: "sawed_off",
+    name: "Sawed-off",
+    type: "Shotgun",
+    damage: 22,
+    fireRate: 0.22,
+    recoil: "High",
+    range: "Very Low",
+    description: "Short double-barreled shotgun that uses 12 gauge ammo."
   },
   {
-    id: 'lmg-dp28',
-    name: 'DP-28',
-    type: 'LMG',
-    damage: 51,
-    fireRate: 'Medium',
-    recoil: 'Medium',
-    range: 'Medium',
-    description: 'Erangel exclusive LMG with high damage per shot'
-  },
-  {
-    id: 'lmg-mg3',
-    name: 'MG3',
-    type: 'LMG',
-    damage: 40,
-    fireRate: 'Very High',
-    recoil: 'High',
-    range: 'Medium',
-    description: 'Airdrop LMG with adjustable fire rate'
+    id: "dbs",
+    name: "DBS",
+    type: "Shotgun",
+    damage: 34,
+    fireRate: 0.2,
+    recoil: "High",
+    range: "Low",
+    description: "Double-barreled pump-action shotgun that uses 12 gauge ammo, found in air drops."
   },
 
   // Pistols
   {
-    id: 'pistol-p92',
-    name: 'P92',
-    type: 'Pistol',
+    id: "p92",
+    name: "P92",
+    type: "Pistol",
     damage: 35,
-    fireRate: 'Medium',
-    recoil: 'Low',
-    range: 'Very Low',
-    description: 'Standard semi-automatic pistol'
+    fireRate: 0.13,
+    recoil: "Very Low",
+    range: "Low",
+    description: "Standard 9mm pistol with 15-round magazine. Low damage but easy to control."
   },
   {
-    id: 'pistol-p1911',
-    name: 'P1911',
-    type: 'Pistol',
+    id: "p1911",
+    name: "P1911",
+    type: "Pistol",
     damage: 41,
-    fireRate: 'Medium',
-    recoil: 'Medium',
-    range: 'Very Low',
-    description: 'Higher damage pistol with lower capacity'
+    fireRate: 0.11,
+    recoil: "Medium",
+    range: "Low",
+    description: "Classic .45 ACP pistol with high damage and moderate recoil."
   },
   {
-    id: 'pistol-r45',
-    name: 'R45',
-    type: 'Pistol',
+    id: "r1895",
+    name: "R1895",
+    type: "Pistol",
     damage: 55,
-    fireRate: 'Low',
-    recoil: 'High',
-    range: 'Low',
-    description: 'Miramar exclusive revolver with high damage'
+    fireRate: 0.4,
+    recoil: "High",
+    range: "Low",
+    description: "Revolver that uses 7.62mm ammo. High damage but slow rate of fire."
   },
   {
-    id: 'pistol-r1895',
-    name: 'R1895',
-    type: 'Pistol',
-    damage: 55,
-    fireRate: 'Very Low',
-    recoil: 'High',
-    range: 'Low',
-    description: 'Classic revolver with high damage and slow reload'
-  },
-  {
-    id: 'pistol-scorpion',
-    name: 'Scorpion',
-    type: 'Pistol',
-    damage: 22,
-    fireRate: 'Very High',
-    recoil: 'Medium',
-    range: 'Very Low',
-    description: 'Machine pistol with high fire rate'
-  },
-  {
-    id: 'pistol-deagle',
-    name: 'Deagle',
-    type: 'Pistol',
+    id: "desert_eagle",
+    name: "Desert Eagle",
+    type: "Pistol",
     damage: 62,
-    fireRate: 'Low',
-    recoil: 'Very High',
-    range: 'Low',
-    description: 'Highest damage pistol with substantial recoil'
+    fireRate: 0.2,
+    recoil: "Very High",
+    range: "Low",
+    description: "High-damage pistol that uses .45 ACP ammo. Difficult to control."
+  },
+  {
+    id: "glock_18c",
+    name: "Glock 18C",
+    type: "Pistol",
+    damage: 19,
+    fireRate: 0.06,
+    recoil: "High",
+    range: "Low",
+    description: "Fully automatic pistol that uses 9mm ammo. Very high rate of fire but difficult to control."
   },
 
   // Melee
   {
-    id: 'melee-pan',
-    name: 'Pan',
-    type: 'Melee',
+    id: "crowbar",
+    name: "Crowbar",
+    type: "Melee",
+    damage: 60,
+    fireRate: 0.7,
+    recoil: "Very Low",
+    range: "Very Low",
+    description: "A versatile tool that can be used as a melee weapon."
+  },
+  {
+    id: "machete",
+    name: "Machete",
+    type: "Melee",
+    damage: 65,
+    fireRate: 0.6,
+    recoil: "Very Low",
+    range: "Very Low",
+    description: "A large knife that can be used as a melee weapon."
+  },
+  {
+    id: "sickle",
+    name: "Sickle",
+    type: "Melee",
+    damage: 55,
+    fireRate: 0.8,
+    recoil: "Very Low",
+    range: "Very Low",
+    description: "A curved blade that can be used as a melee weapon."
+  },
+  {
+    id: "pan",
+    name: "Pan",
+    type: "Melee",
     damage: 80,
-    fireRate: 'Low',
-    recoil: 'Low',
-    range: 'Very Low',
-    description: 'Blocks shots when carried on back, highest melee damage'
-  },
-  {
-    id: 'melee-machete',
-    name: 'Machete',
-    type: 'Melee',
-    damage: 60,
-    fireRate: 'Low',
-    recoil: 'Low',
-    range: 'Very Low',
-    description: 'Long reach melee weapon'
-  },
-  {
-    id: 'melee-crowbar',
-    name: 'Crowbar',
-    type: 'Melee',
-    damage: 60,
-    fireRate: 'Low',
-    recoil: 'Low',
-    range: 'Very Low',
-    description: 'Classic melee weapon'
-  },
-  {
-    id: 'melee-sickle',
-    name: 'Sickle',
-    type: 'Melee',
-    damage: 60,
-    fireRate: 'Low',
-    recoil: 'Low',
-    range: 'Very Low',
-    description: 'Curved blade with moderate damage'
+    fireRate: 0.5,
+    recoil: "Very Low",
+    range: "Very Low",
+    description: "Cast iron pan that can be used for both attack and defense. Can block bullets when equipped on the back."
   },
 
   // Throwables
   {
-    id: 'throwable-frag',
-    name: 'Frag Grenade',
-    type: 'Throwable',
+    id: "frag_grenade",
+    name: "Frag Grenade",
+    type: "Throwable",
     damage: 100,
-    fireRate: 'Very Low',
-    recoil: 'None',
-    range: 'Medium',
-    description: 'High damage explosive with shrapnel effect'
+    fireRate: 0,
+    recoil: "Very Low",
+    range: "Medium",
+    description: "High-damage explosive with 5-second fuse. Lethal within close range."
   },
   {
-    id: 'throwable-smoke',
-    name: 'Smoke Grenade',
-    type: 'Throwable',
+    id: "smoke_grenade",
+    name: "Smoke Grenade",
+    type: "Throwable",
     damage: 0,
-    fireRate: 'Very Low',
-    recoil: 'None',
-    range: 'Medium',
-    description: 'Creates smoke screen for cover'
+    fireRate: 0,
+    recoil: "Very Low",
+    range: "Medium",
+    description: "Creates a cloud of smoke to obscure vision. Useful for cover and distractions."
   },
   {
-    id: 'throwable-molotov',
-    name: 'Molotov Cocktail',
-    type: 'Throwable',
-    damage: 60,
-    fireRate: 'Very Low',
-    recoil: 'None',
-    range: 'Medium',
-    description: 'Creates fire zone that damages players'
-  },
-  {
-    id: 'throwable-stun',
-    name: 'Stun Grenade',
-    type: 'Throwable',
+    id: "stun_grenade",
+    name: "Stun Grenade",
+    type: "Throwable",
     damage: 0,
-    fireRate: 'Very Low',
-    recoil: 'None',
-    range: 'Medium',
-    description: 'Temporarily blinds and deafens enemies'
+    fireRate: 0,
+    recoil: "Very Low",
+    range: "Medium",
+    description: "Temporarily blinds and deafens enemies. Effective for clearing rooms."
   },
   {
-    id: 'throwable-sticky',
-    name: 'Sticky Bomb',
-    type: 'Throwable',
-    damage: 90,
-    fireRate: 'Very Low',
-    recoil: 'None',
-    range: 'Low',
-    description: 'Sticks to surfaces before exploding'
+    id: "molotov_cocktail",
+    name: "Molotov Cocktail",
+    type: "Throwable",
+    damage: 75,
+    fireRate: 0,
+    recoil: "Very Low",
+    range: "Medium",
+    description: "Incendiary device that creates a fire area. Useful for area denial."
+  },
+
+  // Miscellaneous
+  {
+    id: "gas_can",
+    name: "Gas Can",
+    type: "Miscellaneous",
+    damage: 0,
+    fireRate: 0,
+    recoil: "Very Low",
+    range: "None",
+    description: "Used to refuel vehicles. Can be shot to create an explosion."
   }
 ];
 
-export default weapons;
-
-// Helper functions to get weapons by type
-export const getWeaponsByType = (type: Weapon['type']) => {
+export const getWeaponsByType = (type: string): Weapon[] => {
   return weapons.filter(weapon => weapon.type === type);
 };
 
-export const getAllWeaponTypes = (): Weapon['type'][] => {
-  return ['AR', 'SMG', 'Sniper', 'DMR', 'Shotgun', 'LMG', 'Pistol', 'Melee', 'Throwable'];
+export const getAllWeaponTypes = (): string[] => {
+  return [...new Set(weapons.map(weapon => weapon.type))];
 };
+
+export default weapons;

@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import ChatInterface from '@/components/ChatInterface';
@@ -11,6 +12,7 @@ import WeaponsDatabase from '@/components/WeaponsDatabase';
 import ProfilePage from '@/components/ProfilePage';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
+import { Lock } from 'lucide-react';
 
 const Index = () => {
   const [questionsLeft, setQuestionsLeft] = useState<number>(10);
@@ -57,6 +59,11 @@ const Index = () => {
     };
     
     const handleTabNavigation = (event: CustomEvent) => {
+      if (!isLoggedIn && event.detail !== 'dashboard') {
+        // Prevent navigating to other tabs if not logged in
+        handleLoginClick();
+        return;
+      }
       setActiveTab(event.detail);
     };
     
@@ -67,27 +74,91 @@ const Index = () => {
       document.removeEventListener('discordStatus', handleDiscordStatus as EventListener);
       document.removeEventListener('navigateToTab', handleTabNavigation as EventListener);
     };
-  }, [toast]);
+  }, [toast, isLoggedIn]);
+
+  const renderLockedFeatureMessage = (featureName: string) => {
+    return (
+      <div className="p-6 bg-bgmi-dark border border-bgmi-blue/20 rounded-lg">
+        <div className="flex items-center justify-center flex-col py-12">
+          <Lock className="h-12 w-12 text-bgmi-blue mb-4 animate-pulse" />
+          <h2 className="text-xl font-bold text-white mb-4 text-glow">{featureName}</h2>
+          <p className="text-white/70 mb-6 text-center">This feature is available exclusively for logged-in users.</p>
+          <Button 
+            onClick={handleLoginClick} 
+            className="neon-button"
+          >
+            Login to Access
+          </Button>
+        </div>
+      </div>
+    );
+  };
 
   const renderTabContent = () => {
-    switch (activeTab) {
-      case 'dashboard':
-        return (
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <div className="lg:col-span-2 h-[calc(100vh-180px)]">
-              <ChatInterface 
-                questionsLeft={questionsLeft} 
-                isLoggedIn={isLoggedIn}
-                onLoginRequest={handleLoginClick}
-              />
-            </div>
-            
-            <div className="space-y-6">
-              <StatsCard />
-              <RecommendationsCard />
-            </div>
+    // Always allow dashboard access (with chat)
+    if (activeTab === 'dashboard') {
+      return (
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div className="lg:col-span-2 h-[calc(100vh-180px)]">
+            <ChatInterface 
+              questionsLeft={questionsLeft} 
+              isLoggedIn={isLoggedIn}
+              onLoginRequest={handleLoginClick}
+            />
           </div>
-        );
+          
+          <div className="space-y-6">
+            {isLoggedIn ? (
+              <>
+                <StatsCard />
+                <RecommendationsCard />
+              </>
+            ) : (
+              <div className="bg-bgmi-dark p-6 border border-bgmi-blue/20 rounded-lg">
+                <h3 className="text-white font-medium mb-3">Premium Features</h3>
+                <p className="text-white/70 mb-4">Log in to unlock all GameAid features:</p>
+                <ul className="space-y-2 mb-4">
+                  <li className="flex items-center text-white/70">
+                    <span className="h-2 w-2 rounded-full bg-bgmi-blue mr-2"></span>
+                    Detailed gameplay statistics
+                  </li>
+                  <li className="flex items-center text-white/70">
+                    <span className="h-2 w-2 rounded-full bg-bgmi-blue mr-2"></span>
+                    Custom weapon recommendations
+                  </li>
+                  <li className="flex items-center text-white/70">
+                    <span className="h-2 w-2 rounded-full bg-bgmi-blue mr-2"></span>
+                    Heatmaps and drop location guides
+                  </li>
+                  <li className="flex items-center text-white/70">
+                    <span className="h-2 w-2 rounded-full bg-bgmi-blue mr-2"></span>
+                    Discord integration
+                  </li>
+                  <li className="flex items-center text-white/70">
+                    <span className="h-2 w-2 rounded-full bg-bgmi-blue mr-2"></span>
+                    Unlimited AI assistant questions
+                  </li>
+                </ul>
+                <Button 
+                  onClick={handleLoginClick} 
+                  className="neon-button w-full"
+                >
+                  Login Now
+                </Button>
+              </div>
+            )}
+          </div>
+        </div>
+      );
+    }
+    
+    // For all other tabs, check if logged in
+    if (!isLoggedIn) {
+      return renderLockedFeatureMessage(activeTab.charAt(0).toUpperCase() + activeTab.slice(1));
+    }
+    
+    // If logged in, show the appropriate tab content
+    switch (activeTab) {
       case 'stats':
         return (
           <div className="p-6 bg-bgmi-dark border border-bgmi-blue/20 rounded-lg">
@@ -138,9 +209,9 @@ const Index = () => {
           </div>
         );
       case 'weapons':
-        return <WeaponsDatabase />;
+        return <WeaponsDatabase isLoggedIn={isLoggedIn} onLoginRequest={handleLoginClick} />;
       case 'heatmap':
-        return <HeatMap />;
+        return <HeatMap isLoggedIn={isLoggedIn} onLoginRequest={handleLoginClick} />;
       case 'discord': {
         const onDiscordStatusChange = (isLinked: boolean) => {
           setIsDiscordLinked(isLinked);
@@ -161,26 +232,14 @@ const Index = () => {
       case 'rewards':
         return <RewardsSystem isDiscordLinked={isDiscordLinked} />;
       case 'profile':
-        return isLoggedIn ? <ProfilePage /> : (
-          <div className="flex items-center justify-center h-[50vh]">
-            <div className="text-center">
-              <h3 className="text-xl text-white mb-2">Please log in to view your profile</h3>
-              <Button 
-                onClick={handleLoginClick} 
-                className="neon-button mt-4"
-              >
-                Login Now
-              </Button>
-            </div>
-          </div>
-        );
+        return <ProfilePage />;
       default:
         return null;
     }
   };
   
   useEffect(() => {
-    if (!isLoggedIn && activeTab === 'profile') {
+    if (!isLoggedIn && activeTab !== 'dashboard') {
       setActiveTab('dashboard');
     }
   }, [isLoggedIn, activeTab]);
@@ -193,7 +252,13 @@ const Index = () => {
         isLoggedIn={isLoggedIn}
         onLogout={handleLogout}
         activeTab={activeTab}
-        onTabChange={setActiveTab}
+        onTabChange={(tab) => {
+          if (!isLoggedIn && tab !== 'dashboard') {
+            handleLoginClick();
+          } else {
+            setActiveTab(tab);
+          }
+        }}
       />
       
       <main className="flex-1 container py-6">

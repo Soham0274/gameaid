@@ -3,9 +3,19 @@ import React, { useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Button } from '@/components/ui/button';
+import { User } from 'lucide-react';
 import weapons, { getWeaponsByType, getAllWeaponTypes, Weapon } from '@/data/weapons';
 
-const WeaponsDatabase = () => {
+interface WeaponsDatabaseProps {
+  isLoggedIn?: boolean;
+  onLoginRequest?: () => void;
+}
+
+const WeaponsDatabase: React.FC<WeaponsDatabaseProps> = ({ 
+  isLoggedIn = false,
+  onLoginRequest
+}) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [sortBy, setSortBy] = useState<'name' | 'damage'>('name');
   const weaponTypes = getAllWeaponTypes();
@@ -59,6 +69,24 @@ const WeaponsDatabase = () => {
       return a.name.localeCompare(b.name);
     });
   };
+
+  if (!isLoggedIn) {
+    return (
+      <div className="p-6 bg-bgmi-dark border border-bgmi-blue/20 rounded-lg">
+        <div className="flex items-center justify-center flex-col py-12">
+          <h2 className="text-xl font-bold text-white mb-4 text-glow">Weapons Database</h2>
+          <p className="text-white/70 mb-6 text-center">Please log in to access the weapons database.</p>
+          <Button 
+            onClick={onLoginRequest} 
+            className="neon-button"
+          >
+            <User className="h-4 w-4 mr-2" />
+            Login to Access
+          </Button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="p-6 bg-bgmi-dark border border-bgmi-blue/20 rounded-lg">

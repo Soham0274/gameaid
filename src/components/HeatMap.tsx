@@ -1,8 +1,18 @@
 
 import React, { useState } from 'react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Button } from '@/components/ui/button';
+import { User } from 'lucide-react';
 
-const HeatMap = () => {
+interface HeatMapProps {
+  isLoggedIn?: boolean;
+  onLoginRequest?: () => void;
+}
+
+const HeatMap: React.FC<HeatMapProps> = ({ 
+  isLoggedIn = false, 
+  onLoginRequest 
+}) => {
   const [selectedMap, setSelectedMap] = useState("erangel");
   
   const mapImages = {
@@ -58,6 +68,24 @@ const HeatMap = () => {
       </div>
     );
   };
+  
+  if (!isLoggedIn) {
+    return (
+      <div className="p-6 bg-bgmi-dark border border-bgmi-blue/20 rounded-lg">
+        <div className="flex items-center justify-center flex-col py-12">
+          <h2 className="text-xl font-bold text-white mb-4 text-glow">Drop Location Heatmaps</h2>
+          <p className="text-white/70 mb-6 text-center">Please log in to access the heatmap feature.</p>
+          <Button 
+            onClick={onLoginRequest} 
+            className="neon-button"
+          >
+            <User className="h-4 w-4 mr-2" />
+            Login to Access
+          </Button>
+        </div>
+      </div>
+    );
+  }
   
   return (
     <div className="p-6 bg-bgmi-dark border border-bgmi-blue/20 rounded-lg">
