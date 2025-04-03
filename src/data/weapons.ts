@@ -1,3 +1,4 @@
+
 export interface Weapon {
   id: string;
   name: string;
@@ -5,7 +6,7 @@ export interface Weapon {
   damage: number;
   fireRate: number;
   recoil: string;
-  range: string;
+  range: "Very Low" | "Low" | "Medium" | "High" | "Very High" | "Very Long" | "None";
   description: string;
 }
 
