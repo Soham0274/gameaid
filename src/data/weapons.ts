@@ -6,7 +6,7 @@ export interface Weapon {
   damage: number;
   fireRate: number;
   recoil: string;
-  range: "Very Low" | "Low" | "Medium" | "High" | "Very High" | "Very Long" | "None";
+  range: "Very Low" | "Low" | "Medium" | "High" | "Very High" | "Very Long" | "Long" | "None";
   description: string;
 }
 
