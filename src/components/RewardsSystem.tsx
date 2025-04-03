@@ -1,8 +1,7 @@
-
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
-import { Gift, Trophy, Star, Award, ShieldCheck } from 'lucide-react';
+import { Gift, Trophy, Star, Award, ShieldCheck, MessageSquare } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
 interface RewardsSystemProps {

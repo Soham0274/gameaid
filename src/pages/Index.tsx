@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import ChatInterface from '@/components/ChatInterface';
@@ -9,6 +8,7 @@ import HeatMap from '@/components/HeatMap';
 import DiscordIntegration from '@/components/DiscordIntegration';
 import RewardsSystem from '@/components/RewardsSystem';
 import ProfilePage from '@/components/ProfilePage';
+import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
 
 const Index = () => {
@@ -44,7 +44,6 @@ const Index = () => {
     });
   };
   
-  // Listen for Discord connection status
   useEffect(() => {
     const handleDiscordStatus = (event: CustomEvent) => {
       setIsDiscordLinked(event.detail.isLinked);
@@ -56,7 +55,6 @@ const Index = () => {
       }
     };
     
-    // Listen for tab navigation events from other components
     const handleTabNavigation = (event: CustomEvent) => {
       setActiveTab(event.detail);
     };
@@ -70,13 +68,11 @@ const Index = () => {
     };
   }, [toast]);
 
-  // Render content based on active tab
   const renderTabContent = () => {
     switch (activeTab) {
       case 'dashboard':
         return (
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            {/* Chat Interface - Takes 2/3 of the screen on desktop */}
             <div className="lg:col-span-2 h-[calc(100vh-180px)]">
               <ChatInterface 
                 questionsLeft={questionsLeft} 
@@ -85,7 +81,6 @@ const Index = () => {
               />
             </div>
             
-            {/* Stats & Recommendations - Takes 1/3 of the screen on desktop */}
             <div className="space-y-6">
               <StatsCard />
               <RecommendationsCard />
@@ -285,7 +280,6 @@ const Index = () => {
     }
   };
   
-  // Automatically switch to the dashboard tab when logging out from profile
   useEffect(() => {
     if (!isLoggedIn && activeTab === 'profile') {
       setActiveTab('dashboard');
