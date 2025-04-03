@@ -7,6 +7,7 @@ import LoginModal from '@/components/LoginModal';
 import HeatMap from '@/components/HeatMap';
 import DiscordIntegration from '@/components/DiscordIntegration';
 import RewardsSystem from '@/components/RewardsSystem';
+import WeaponsDatabase from '@/components/WeaponsDatabase';
 import ProfilePage from '@/components/ProfilePage';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
@@ -137,109 +138,7 @@ const Index = () => {
           </div>
         );
       case 'weapons':
-        return (
-          <div className="p-6 bg-bgmi-dark border border-bgmi-blue/20 rounded-lg">
-            <h2 className="text-xl font-bold text-white mb-4">Weapon Analysis</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              <div className="bg-bgmi-darker p-4 rounded-lg border border-bgmi-blue/20">
-                <h3 className="text-bgmi-blue font-medium mb-2">Assault Rifles</h3>
-                <div className="mb-3">
-                  <p className="text-white font-medium">M416</p>
-                  <p className="text-white/70 text-sm">Best all-rounder with excellent recoil control</p>
-                  <div className="grid grid-cols-3 gap-2 mt-1">
-                    <div>
-                      <p className="text-xs text-white/50">Damage</p>
-                      <p className="text-white">41</p>
-                    </div>
-                    <div>
-                      <p className="text-xs text-white/50">Fire Rate</p>
-                      <p className="text-white">High</p>
-                    </div>
-                    <div>
-                      <p className="text-xs text-white/50">Recoil</p>
-                      <p className="text-white">Low</p>
-                    </div>
-                  </div>
-                </div>
-                <div>
-                  <p className="text-white font-medium">AKM</p>
-                  <p className="text-white/70 text-sm">High damage but difficult recoil pattern</p>
-                  <div className="grid grid-cols-3 gap-2 mt-1">
-                    <div>
-                      <p className="text-xs text-white/50">Damage</p>
-                      <p className="text-white">49</p>
-                    </div>
-                    <div>
-                      <p className="text-xs text-white/50">Fire Rate</p>
-                      <p className="text-white">Medium</p>
-                    </div>
-                    <div>
-                      <p className="text-xs text-white/50">Recoil</p>
-                      <p className="text-white">High</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="bg-bgmi-darker p-4 rounded-lg border border-bgmi-blue/20">
-                <h3 className="text-bgmi-blue font-medium mb-2">Sniper Rifles</h3>
-                <div className="mb-3">
-                  <p className="text-white font-medium">AWM</p>
-                  <p className="text-white/70 text-sm">Highest damage sniper, air drop only</p>
-                  <div className="grid grid-cols-3 gap-2 mt-1">
-                    <div>
-                      <p className="text-xs text-white/50">Damage</p>
-                      <p className="text-white">120</p>
-                    </div>
-                    <div>
-                      <p className="text-xs text-white/50">Fire Rate</p>
-                      <p className="text-white">Low</p>
-                    </div>
-                    <div>
-                      <p className="text-xs text-white/50">Range</p>
-                      <p className="text-white">Very High</p>
-                    </div>
-                  </div>
-                </div>
-                <div>
-                  <p className="text-white font-medium">Kar98k</p>
-                  <p className="text-white/70 text-sm">Balanced bolt-action sniper</p>
-                  <div className="grid grid-cols-3 gap-2 mt-1">
-                    <div>
-                      <p className="text-xs text-white/50">Damage</p>
-                      <p className="text-white">75</p>
-                    </div>
-                    <div>
-                      <p className="text-xs text-white/50">Fire Rate</p>
-                      <p className="text-white">Low</p>
-                    </div>
-                    <div>
-                      <p className="text-xs text-white/50">Range</p>
-                      <p className="text-white">High</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="bg-bgmi-darker p-4 rounded-lg border border-bgmi-blue/20">
-                <h3 className="text-bgmi-blue font-medium mb-2">Recommended Loadouts</h3>
-                <div className="mb-3">
-                  <p className="text-white font-medium">Close-Range Combat</p>
-                  <p className="text-white/70 text-sm">M416 + UMP45</p>
-                  <p className="text-white/60 text-xs mt-1">Perfect for close to mid-range fights in urban areas</p>
-                </div>
-                <div className="mb-3">
-                  <p className="text-white font-medium">Long-Range Combat</p>
-                  <p className="text-white/70 text-sm">Kar98k + M416</p>
-                  <p className="text-white/60 text-xs mt-1">Versatile for all engagement distances</p>
-                </div>
-                <div>
-                  <p className="text-white font-medium">Balanced Playstyle</p>
-                  <p className="text-white/70 text-sm">DP-28 + SKS</p>
-                  <p className="text-white/60 text-xs mt-1">Great for suppressive fire and medium range support</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        );
+        return <WeaponsDatabase />;
       case 'heatmap':
         return <HeatMap />;
       case 'discord': {

@@ -12,377 +12,103 @@ const HeatMap = () => {
     vikendi: "https://media.discordapp.net/attachments/1232390066248175647/1232390250731458630/vikendi-heatmap.jpg?ex=662d3be6&is=662bea66&hm=a92f11bcf151f06d2e04deeb4f24b42c7baec1e835c40a44c9bb9a21ae64c9fb&=&format=webp&quality=lossless&width=671&height=671"
   };
   
+  // Location data for each map
+  const mapLocations = {
+    erangel: [
+      { name: "Military Base", loot: 3, risk: 4, description: "High-tier loot, high risk. Popular for skilled players." },
+      { name: "Pochinki", loot: 3, risk: 3, description: "Central location with good loot. Great for early fights." },
+      { name: "Georgopol", loot: 4, risk: 3, description: "Excellent loot in the containers. Good for squad play." },
+      { name: "School", loot: 3, risk: 5, description: "Dense building with high-tier loot. Extremely contested." },
+      { name: "Mansion", loot: 2, risk: 2, description: "Moderate loot with lower player traffic." }
+    ],
+    miramar: [
+      { name: "Hacienda del Patron", loot: 4, risk: 5, description: "Luxury estate with top-tier loot. High-risk, high-reward." },
+      { name: "Los Leones", loot: 3, risk: 3, description: "Urban area with consistent loot. Good for methodical players." },
+      { name: "San Martin", loot: 2, risk: 2, description: "Mid-size town with balanced risk-reward ratio." },
+      { name: "El Pozo", loot: 3, risk: 2, description: "Spread-out town with good vehicle spawns." },
+      { name: "Pecado", loot: 4, risk: 4, description: "Densely packed city with excellent loot. High traffic area." }
+    ],
+    sanhok: [
+      { name: "Paradise Resort", loot: 4, risk: 5, description: "Central resort with excellent loot. Very high traffic area." },
+      { name: "Boot Camp", loot: 5, risk: 5, description: "Military training facility with concentrated high-tier loot." },
+      { name: "Ruins", loot: 3, risk: 3, description: "Ancient temple with decent loot and defensive positions." },
+      { name: "Pai Nan", loot: 3, risk: 2, description: "Riverside village with moderate loot and good rotation options." },
+      { name: "Quarry", loot: 2, risk: 1, description: "Open area with sparse loot but usually safe from early fights." }
+    ],
+    vikendi: [
+      { name: "Castle", loot: 4, risk: 4, description: "Historic fortress with excellent loot distribution." },
+      { name: "Dino Park", loot: 2, risk: 2, description: "Unique location with moderate loot and interesting terrain." },
+      { name: "Goroka", loot: 3, risk: 3, description: "Cement factory with good loot density and cover options." },
+      { name: "Cosmodrome", loot: 4, risk: 3, description: "Abandoned space facility with high-tier loot and vehicles." },
+      { name: "Villa", loot: 3, risk: 2, description: "Luxury residence with moderate traffic and decent loot." }
+    ]
+  };
+  
+  // Helper function to render rating bars
+  const renderRatingBars = (rating: number, type: 'loot' | 'risk') => {
+    const color = type === 'loot' ? 'bg-bgmi-blue' : 'bg-red-500';
+    return (
+      <div className="flex items-center space-x-1 mt-1">
+        {[...Array(5)].map((_, index) => (
+          <div 
+            key={index} 
+            className={`h-1.5 w-5 ${index < rating ? color : 'bg-white/20'} rounded-sm`}
+          />
+        ))}
+      </div>
+    );
+  };
+  
   return (
     <div className="p-6 bg-bgmi-dark border border-bgmi-blue/20 rounded-lg">
-      <h2 className="text-xl font-bold text-white mb-4">Drop Location Heatmaps</h2>
+      <h2 className="text-xl font-bold text-white mb-4 text-glow">Drop Location Heatmaps</h2>
       
       <div className="mb-6">
-        <p className="text-white/70 mb-3">Select a map to view popular landing spots and high-traffic areas</p>
+        <p className="text-white mb-3 bg-bgmi-darker px-3 py-1 rounded-md inline-block">Select a map to view popular landing spots and high-traffic areas</p>
         <Select value={selectedMap} onValueChange={setSelectedMap}>
-          <SelectTrigger className="w-full md:w-[200px] bg-bgmi-darker border-bgmi-blue/30">
+          <SelectTrigger className="w-full md:w-[200px] bg-bgmi-darker border-bgmi-blue/30 text-white">
             <SelectValue placeholder="Select a map" />
           </SelectTrigger>
           <SelectContent className="bg-bgmi-darker border-bgmi-blue/30">
-            <SelectItem value="erangel">Erangel</SelectItem>
-            <SelectItem value="miramar">Miramar</SelectItem>
-            <SelectItem value="sanhok">Sanhok</SelectItem>
-            <SelectItem value="vikendi">Vikendi</SelectItem>
+            <SelectItem value="erangel" className="text-white">Erangel</SelectItem>
+            <SelectItem value="miramar" className="text-white">Miramar</SelectItem>
+            <SelectItem value="sanhok" className="text-white">Sanhok</SelectItem>
+            <SelectItem value="vikendi" className="text-white">Vikendi</SelectItem>
           </SelectContent>
         </Select>
       </div>
       
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="bg-bgmi-darker p-4 rounded-lg border border-bgmi-blue/20">
+        <div className="bg-bgmi-darker p-4 rounded-lg border border-bgmi-blue/20 transition-all duration-300 hover:border-bgmi-blue/50">
           <img 
             src={mapImages[selectedMap as keyof typeof mapImages]} 
             alt={`${selectedMap} heatmap`} 
             className="w-full h-auto rounded border border-bgmi-blue/20"
           />
-          <p className="text-xs text-white/50 mt-2 text-center">Heatmap showing drop frequency and player density</p>
+          <p className="text-xs text-white mt-2 text-center bg-bgmi-dark px-2 py-1 rounded">Heatmap showing drop frequency and player density</p>
         </div>
         
         <div className="bg-bgmi-darker p-4 rounded-lg border border-bgmi-blue/20">
-          <h3 className="text-bgmi-blue font-medium mb-3">Recommended Drop Locations</h3>
+          <h3 className="text-bgmi-blue font-medium mb-3 text-glow">Recommended Drop Locations</h3>
           
-          {selectedMap === "erangel" && (
-            <div className="space-y-3">
-              <div className="border-b border-bgmi-blue/10 pb-2">
-                <p className="text-white font-medium">Military Base</p>
-                <p className="text-white/70 text-sm">High-tier loot, high risk. Popular for skilled players.</p>
-                <div className="flex mt-1">
+          <div className="space-y-3 max-h-[400px] overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-bgmi-blue/30 scrollbar-track-bgmi-darker">
+            {mapLocations[selectedMap as keyof typeof mapLocations].map((location, index) => (
+              <div key={index} className="border-b border-bgmi-blue/10 pb-3 mb-3 last:border-b-0 last:mb-0 last:pb-0 bg-gradient-to-r from-bgmi-dark to-transparent p-3 rounded-md hover:from-bgmi-dark/80 hover:to-bgmi-darker/80 transition-all duration-200">
+                <p className="text-white font-medium">{location.name}</p>
+                <p className="text-white text-sm bg-bgmi-dark/50 p-1 rounded mt-1">{location.description}</p>
+                <div className="flex mt-2">
                   <div className="mr-4">
-                    <span className="text-xs text-white/50">Loot Quality</span>
-                    <div className="flex items-center space-x-1 mt-1">
-                      <div className="h-1.5 w-5 bg-bgmi-blue rounded-sm"></div>
-                      <div className="h-1.5 w-5 bg-bgmi-blue rounded-sm"></div>
-                      <div className="h-1.5 w-5 bg-bgmi-blue rounded-sm"></div>
-                      <div className="h-1.5 w-5 bg-white/20 rounded-sm"></div>
-                      <div className="h-1.5 w-5 bg-white/20 rounded-sm"></div>
-                    </div>
+                    <span className="text-xs text-white bg-bgmi-darker px-2 py-0.5 rounded">Loot Quality</span>
+                    {renderRatingBars(location.loot, 'loot')}
                   </div>
                   <div>
-                    <span className="text-xs text-white/50">Risk Level</span>
-                    <div className="flex items-center space-x-1 mt-1">
-                      <div className="h-1.5 w-5 bg-red-500 rounded-sm"></div>
-                      <div className="h-1.5 w-5 bg-red-500 rounded-sm"></div>
-                      <div className="h-1.5 w-5 bg-red-500 rounded-sm"></div>
-                      <div className="h-1.5 w-5 bg-red-500 rounded-sm"></div>
-                      <div className="h-1.5 w-5 bg-white/20 rounded-sm"></div>
-                    </div>
+                    <span className="text-xs text-white bg-bgmi-darker px-2 py-0.5 rounded">Risk Level</span>
+                    {renderRatingBars(location.risk, 'risk')}
                   </div>
                 </div>
               </div>
-              
-              <div className="border-b border-bgmi-blue/10 pb-2">
-                <p className="text-white font-medium">Pochinki</p>
-                <p className="text-white/70 text-sm">Central location with good loot. Great for early fights.</p>
-                <div className="flex mt-1">
-                  <div className="mr-4">
-                    <span className="text-xs text-white/50">Loot Quality</span>
-                    <div className="flex items-center space-x-1 mt-1">
-                      <div className="h-1.5 w-5 bg-bgmi-blue rounded-sm"></div>
-                      <div className="h-1.5 w-5 bg-bgmi-blue rounded-sm"></div>
-                      <div className="h-1.5 w-5 bg-bgmi-blue rounded-sm"></div>
-                      <div className="h-1.5 w-5 bg-white/20 rounded-sm"></div>
-                      <div className="h-1.5 w-5 bg-white/20 rounded-sm"></div>
-                    </div>
-                  </div>
-                  <div>
-                    <span className="text-xs text-white/50">Risk Level</span>
-                    <div className="flex items-center space-x-1 mt-1">
-                      <div className="h-1.5 w-5 bg-red-500 rounded-sm"></div>
-                      <div className="h-1.5 w-5 bg-red-500 rounded-sm"></div>
-                      <div className="h-1.5 w-5 bg-red-500 rounded-sm"></div>
-                      <div className="h-1.5 w-5 bg-white/20 rounded-sm"></div>
-                      <div className="h-1.5 w-5 bg-white/20 rounded-sm"></div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              
-              <div>
-                <p className="text-white font-medium">Georgopol</p>
-                <p className="text-white/70 text-sm">Excellent loot in the containers. Good for squad play.</p>
-                <div className="flex mt-1">
-                  <div className="mr-4">
-                    <span className="text-xs text-white/50">Loot Quality</span>
-                    <div className="flex items-center space-x-1 mt-1">
-                      <div className="h-1.5 w-5 bg-bgmi-blue rounded-sm"></div>
-                      <div className="h-1.5 w-5 bg-bgmi-blue rounded-sm"></div>
-                      <div className="h-1.5 w-5 bg-bgmi-blue rounded-sm"></div>
-                      <div className="h-1.5 w-5 bg-bgmi-blue rounded-sm"></div>
-                      <div className="h-1.5 w-5 bg-white/20 rounded-sm"></div>
-                    </div>
-                  </div>
-                  <div>
-                    <span className="text-xs text-white/50">Risk Level</span>
-                    <div className="flex items-center space-x-1 mt-1">
-                      <div className="h-1.5 w-5 bg-red-500 rounded-sm"></div>
-                      <div className="h-1.5 w-5 bg-red-500 rounded-sm"></div>
-                      <div className="h-1.5 w-5 bg-red-500 rounded-sm"></div>
-                      <div className="h-1.5 w-5 bg-white/20 rounded-sm"></div>
-                      <div className="h-1.5 w-5 bg-white/20 rounded-sm"></div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
-          
-          {selectedMap === "miramar" && (
-            <div className="space-y-3">
-              <div className="border-b border-bgmi-blue/10 pb-2">
-                <p className="text-white font-medium">Hacienda del Patron</p>
-                <p className="text-white/70 text-sm">Luxury estate with top-tier loot. High-risk, high-reward.</p>
-                <div className="flex mt-1">
-                  <div className="mr-4">
-                    <span className="text-xs text-white/50">Loot Quality</span>
-                    <div className="flex items-center space-x-1 mt-1">
-                      <div className="h-1.5 w-5 bg-bgmi-blue rounded-sm"></div>
-                      <div className="h-1.5 w-5 bg-bgmi-blue rounded-sm"></div>
-                      <div className="h-1.5 w-5 bg-bgmi-blue rounded-sm"></div>
-                      <div className="h-1.5 w-5 bg-bgmi-blue rounded-sm"></div>
-                      <div className="h-1.5 w-5 bg-white/20 rounded-sm"></div>
-                    </div>
-                  </div>
-                  <div>
-                    <span className="text-xs text-white/50">Risk Level</span>
-                    <div className="flex items-center space-x-1 mt-1">
-                      <div className="h-1.5 w-5 bg-red-500 rounded-sm"></div>
-                      <div className="h-1.5 w-5 bg-red-500 rounded-sm"></div>
-                      <div className="h-1.5 w-5 bg-red-500 rounded-sm"></div>
-                      <div className="h-1.5 w-5 bg-red-500 rounded-sm"></div>
-                      <div className="h-1.5 w-5 bg-red-500 rounded-sm"></div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              
-              <div className="border-b border-bgmi-blue/10 pb-2">
-                <p className="text-white font-medium">Los Leones</p>
-                <p className="text-white/70 text-sm">Urban area with consistent loot. Good for methodical players.</p>
-                <div className="flex mt-1">
-                  <div className="mr-4">
-                    <span className="text-xs text-white/50">Loot Quality</span>
-                    <div className="flex items-center space-x-1 mt-1">
-                      <div className="h-1.5 w-5 bg-bgmi-blue rounded-sm"></div>
-                      <div className="h-1.5 w-5 bg-bgmi-blue rounded-sm"></div>
-                      <div className="h-1.5 w-5 bg-bgmi-blue rounded-sm"></div>
-                      <div className="h-1.5 w-5 bg-white/20 rounded-sm"></div>
-                      <div className="h-1.5 w-5 bg-white/20 rounded-sm"></div>
-                    </div>
-                  </div>
-                  <div>
-                    <span className="text-xs text-white/50">Risk Level</span>
-                    <div className="flex items-center space-x-1 mt-1">
-                      <div className="h-1.5 w-5 bg-red-500 rounded-sm"></div>
-                      <div className="h-1.5 w-5 bg-red-500 rounded-sm"></div>
-                      <div className="h-1.5 w-5 bg-red-500 rounded-sm"></div>
-                      <div className="h-1.5 w-5 bg-white/20 rounded-sm"></div>
-                      <div className="h-1.5 w-5 bg-white/20 rounded-sm"></div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              
-              <div>
-                <p className="text-white font-medium">San Martin</p>
-                <p className="text-white/70 text-sm">Mid-size town with balanced risk-reward ratio.</p>
-                <div className="flex mt-1">
-                  <div className="mr-4">
-                    <span className="text-xs text-white/50">Loot Quality</span>
-                    <div className="flex items-center space-x-1 mt-1">
-                      <div className="h-1.5 w-5 bg-bgmi-blue rounded-sm"></div>
-                      <div className="h-1.5 w-5 bg-bgmi-blue rounded-sm"></div>
-                      <div className="h-1.5 w-5 bg-white/20 rounded-sm"></div>
-                      <div className="h-1.5 w-5 bg-white/20 rounded-sm"></div>
-                      <div className="h-1.5 w-5 bg-white/20 rounded-sm"></div>
-                    </div>
-                  </div>
-                  <div>
-                    <span className="text-xs text-white/50">Risk Level</span>
-                    <div className="flex items-center space-x-1 mt-1">
-                      <div className="h-1.5 w-5 bg-red-500 rounded-sm"></div>
-                      <div className="h-1.5 w-5 bg-red-500 rounded-sm"></div>
-                      <div className="h-1.5 w-5 bg-white/20 rounded-sm"></div>
-                      <div className="h-1.5 w-5 bg-white/20 rounded-sm"></div>
-                      <div className="h-1.5 w-5 bg-white/20 rounded-sm"></div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
-          
-          {selectedMap === "sanhok" && (
-            <div className="space-y-3">
-              <div className="border-b border-bgmi-blue/10 pb-2">
-                <p className="text-white font-medium">Paradise Resort</p>
-                <p className="text-white/70 text-sm">Central resort with excellent loot. Very high traffic area.</p>
-                <div className="flex mt-1">
-                  <div className="mr-4">
-                    <span className="text-xs text-white/50">Loot Quality</span>
-                    <div className="flex items-center space-x-1 mt-1">
-                      <div className="h-1.5 w-5 bg-bgmi-blue rounded-sm"></div>
-                      <div className="h-1.5 w-5 bg-bgmi-blue rounded-sm"></div>
-                      <div className="h-1.5 w-5 bg-bgmi-blue rounded-sm"></div>
-                      <div className="h-1.5 w-5 bg-bgmi-blue rounded-sm"></div>
-                      <div className="h-1.5 w-5 bg-white/20 rounded-sm"></div>
-                    </div>
-                  </div>
-                  <div>
-                    <span className="text-xs text-white/50">Risk Level</span>
-                    <div className="flex items-center space-x-1 mt-1">
-                      <div className="h-1.5 w-5 bg-red-500 rounded-sm"></div>
-                      <div className="h-1.5 w-5 bg-red-500 rounded-sm"></div>
-                      <div className="h-1.5 w-5 bg-red-500 rounded-sm"></div>
-                      <div className="h-1.5 w-5 bg-red-500 rounded-sm"></div>
-                      <div className="h-1.5 w-5 bg-red-500 rounded-sm"></div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              
-              <div className="border-b border-bgmi-blue/10 pb-2">
-                <p className="text-white font-medium">Boot Camp</p>
-                <p className="text-white/70 text-sm">Military training facility with concentrated high-tier loot.</p>
-                <div className="flex mt-1">
-                  <div className="mr-4">
-                    <span className="text-xs text-white/50">Loot Quality</span>
-                    <div className="flex items-center space-x-1 mt-1">
-                      <div className="h-1.5 w-5 bg-bgmi-blue rounded-sm"></div>
-                      <div className="h-1.5 w-5 bg-bgmi-blue rounded-sm"></div>
-                      <div className="h-1.5 w-5 bg-bgmi-blue rounded-sm"></div>
-                      <div className="h-1.5 w-5 bg-bgmi-blue rounded-sm"></div>
-                      <div className="h-1.5 w-5 bg-bgmi-blue rounded-sm"></div>
-                    </div>
-                  </div>
-                  <div>
-                    <span className="text-xs text-white/50">Risk Level</span>
-                    <div className="flex items-center space-x-1 mt-1">
-                      <div className="h-1.5 w-5 bg-red-500 rounded-sm"></div>
-                      <div className="h-1.5 w-5 bg-red-500 rounded-sm"></div>
-                      <div className="h-1.5 w-5 bg-red-500 rounded-sm"></div>
-                      <div className="h-1.5 w-5 bg-red-500 rounded-sm"></div>
-                      <div className="h-1.5 w-5 bg-red-500 rounded-sm"></div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              
-              <div>
-                <p className="text-white font-medium">Ruins</p>
-                <p className="text-white/70 text-sm">Ancient temple with decent loot and defensive positions.</p>
-                <div className="flex mt-1">
-                  <div className="mr-4">
-                    <span className="text-xs text-white/50">Loot Quality</span>
-                    <div className="flex items-center space-x-1 mt-1">
-                      <div className="h-1.5 w-5 bg-bgmi-blue rounded-sm"></div>
-                      <div className="h-1.5 w-5 bg-bgmi-blue rounded-sm"></div>
-                      <div className="h-1.5 w-5 bg-bgmi-blue rounded-sm"></div>
-                      <div className="h-1.5 w-5 bg-white/20 rounded-sm"></div>
-                      <div className="h-1.5 w-5 bg-white/20 rounded-sm"></div>
-                    </div>
-                  </div>
-                  <div>
-                    <span className="text-xs text-white/50">Risk Level</span>
-                    <div className="flex items-center space-x-1 mt-1">
-                      <div className="h-1.5 w-5 bg-red-500 rounded-sm"></div>
-                      <div className="h-1.5 w-5 bg-red-500 rounded-sm"></div>
-                      <div className="h-1.5 w-5 bg-red-500 rounded-sm"></div>
-                      <div className="h-1.5 w-5 bg-white/20 rounded-sm"></div>
-                      <div className="h-1.5 w-5 bg-white/20 rounded-sm"></div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
-          
-          {selectedMap === "vikendi" && (
-            <div className="space-y-3">
-              <div className="border-b border-bgmi-blue/10 pb-2">
-                <p className="text-white font-medium">Castle</p>
-                <p className="text-white/70 text-sm">Historic fortress with excellent loot distribution.</p>
-                <div className="flex mt-1">
-                  <div className="mr-4">
-                    <span className="text-xs text-white/50">Loot Quality</span>
-                    <div className="flex items-center space-x-1 mt-1">
-                      <div className="h-1.5 w-5 bg-bgmi-blue rounded-sm"></div>
-                      <div className="h-1.5 w-5 bg-bgmi-blue rounded-sm"></div>
-                      <div className="h-1.5 w-5 bg-bgmi-blue rounded-sm"></div>
-                      <div className="h-1.5 w-5 bg-bgmi-blue rounded-sm"></div>
-                      <div className="h-1.5 w-5 bg-white/20 rounded-sm"></div>
-                    </div>
-                  </div>
-                  <div>
-                    <span className="text-xs text-white/50">Risk Level</span>
-                    <div className="flex items-center space-x-1 mt-1">
-                      <div className="h-1.5 w-5 bg-red-500 rounded-sm"></div>
-                      <div className="h-1.5 w-5 bg-red-500 rounded-sm"></div>
-                      <div className="h-1.5 w-5 bg-red-500 rounded-sm"></div>
-                      <div className="h-1.5 w-5 bg-red-500 rounded-sm"></div>
-                      <div className="h-1.5 w-5 bg-white/20 rounded-sm"></div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              
-              <div className="border-b border-bgmi-blue/10 pb-2">
-                <p className="text-white font-medium">Dino Park</p>
-                <p className="text-white/70 text-sm">Unique location with moderate loot and interesting terrain.</p>
-                <div className="flex mt-1">
-                  <div className="mr-4">
-                    <span className="text-xs text-white/50">Loot Quality</span>
-                    <div className="flex items-center space-x-1 mt-1">
-                      <div className="h-1.5 w-5 bg-bgmi-blue rounded-sm"></div>
-                      <div className="h-1.5 w-5 bg-bgmi-blue rounded-sm"></div>
-                      <div className="h-1.5 w-5 bg-white/20 rounded-sm"></div>
-                      <div className="h-1.5 w-5 bg-white/20 rounded-sm"></div>
-                      <div className="h-1.5 w-5 bg-white/20 rounded-sm"></div>
-                    </div>
-                  </div>
-                  <div>
-                    <span className="text-xs text-white/50">Risk Level</span>
-                    <div className="flex items-center space-x-1 mt-1">
-                      <div className="h-1.5 w-5 bg-red-500 rounded-sm"></div>
-                      <div className="h-1.5 w-5 bg-red-500 rounded-sm"></div>
-                      <div className="h-1.5 w-5 bg-white/20 rounded-sm"></div>
-                      <div className="h-1.5 w-5 bg-white/20 rounded-sm"></div>
-                      <div className="h-1.5 w-5 bg-white/20 rounded-sm"></div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              
-              <div>
-                <p className="text-white font-medium">Goroka</p>
-                <p className="text-white/70 text-sm">Cement factory with good loot density and cover options.</p>
-                <div className="flex mt-1">
-                  <div className="mr-4">
-                    <span className="text-xs text-white/50">Loot Quality</span>
-                    <div className="flex items-center space-x-1 mt-1">
-                      <div className="h-1.5 w-5 bg-bgmi-blue rounded-sm"></div>
-                      <div className="h-1.5 w-5 bg-bgmi-blue rounded-sm"></div>
-                      <div className="h-1.5 w-5 bg-bgmi-blue rounded-sm"></div>
-                      <div className="h-1.5 w-5 bg-white/20 rounded-sm"></div>
-                      <div className="h-1.5 w-5 bg-white/20 rounded-sm"></div>
-                    </div>
-                  </div>
-                  <div>
-                    <span className="text-xs text-white/50">Risk Level</span>
-                    <div className="flex items-center space-x-1 mt-1">
-                      <div className="h-1.5 w-5 bg-red-500 rounded-sm"></div>
-                      <div className="h-1.5 w-5 bg-red-500 rounded-sm"></div>
-                      <div className="h-1.5 w-5 bg-red-500 rounded-sm"></div>
-                      <div className="h-1.5 w-5 bg-white/20 rounded-sm"></div>
-                      <div className="h-1.5 w-5 bg-white/20 rounded-sm"></div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
+            ))}
+          </div>
         </div>
       </div>
     </div>
