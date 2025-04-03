@@ -21,15 +21,24 @@ const Navbar: React.FC<NavbarProps> = ({
   activeTab,
   onTabChange
 }) => {
-  const tabs = [
-    { id: 'dashboard', label: 'Dashboard' },
-    { id: 'stats', label: 'Stats' },
-    { id: 'guides', label: 'Guides' },
-    { id: 'weapons', label: 'Weapons' },
-    { id: 'heatmap', label: 'Heatmap' },
-    { id: 'discord', label: 'Discord' },
-    { id: 'rewards', label: 'Rewards' }
-  ];
+  const getNavTabs = () => {
+    const baseTabs = [
+      { id: 'dashboard', label: 'Dashboard' },
+      { id: 'stats', label: 'Stats' },
+      { id: 'guides', label: 'Guides' },
+      { id: 'weapons', label: 'Weapons' },
+      { id: 'heatmap', label: 'Heatmap' },
+      { id: 'discord', label: 'Discord' },
+      { id: 'rewards', label: 'Rewards' }
+    ];
+    
+    // Add profile tab if logged in
+    if (isLoggedIn) {
+      baseTabs.push({ id: 'profile', label: 'Profile' });
+    }
+    
+    return baseTabs;
+  };
 
   return (
     <header className="border-b border-bgmi-blue/20 bg-bgmi-dark/90 backdrop-blur-md sticky top-0 z-50">
@@ -43,7 +52,7 @@ const Navbar: React.FC<NavbarProps> = ({
         </div>
         
         <div className="hidden md:flex items-center gap-4 overflow-x-auto">
-          {tabs.map(tab => (
+          {getNavTabs().map(tab => (
             <button 
               key={tab.id}
               className={cn(
@@ -77,7 +86,11 @@ const Navbar: React.FC<NavbarProps> = ({
           
           {isLoggedIn ? (
             <div className="flex items-center gap-2">
-              <Button variant="outline" className="flex items-center gap-2 border-bgmi-blue/30 text-white bg-bgmi-dark/90">
+              <Button 
+                variant="outline" 
+                className="flex items-center gap-2 border-bgmi-blue/30 text-white bg-bgmi-dark/90"
+                onClick={() => onTabChange('profile')}
+              >
                 <User className="h-4 w-4 text-bgmi-blue" />
                 <span>Profile</span>
               </Button>

@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import ChatInterface from '@/components/ChatInterface';
 import StatsCard from '@/components/StatsCard';
@@ -8,6 +8,7 @@ import LoginModal from '@/components/LoginModal';
 import HeatMap from '@/components/HeatMap';
 import DiscordIntegration from '@/components/DiscordIntegration';
 import RewardsSystem from '@/components/RewardsSystem';
+import ProfilePage from '@/components/ProfilePage';
 import { useToast } from '@/hooks/use-toast';
 
 const Index = () => {
@@ -15,6 +16,7 @@ const Index = () => {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState<boolean>(false);
   const [activeTab, setActiveTab] = useState<string>('dashboard');
+  const [isDiscordLinked, setIsDiscordLinked] = useState<boolean>(false);
   const { toast } = useToast();
 
   const handleLoginClick = () => {
@@ -34,12 +36,39 @@ const Index = () => {
   const handleLogout = () => {
     setIsLoggedIn(false);
     setQuestionsLeft(10);
+    setIsDiscordLinked(false);
     toast({
       title: "Logged Out",
       description: "You've been successfully logged out.",
       variant: "default",
     });
   };
+  
+  // Listen for Discord connection status
+  useEffect(() => {
+    const handleDiscordStatus = (event: CustomEvent) => {
+      setIsDiscordLinked(event.detail.isLinked);
+      if (event.detail.isLinked) {
+        toast({
+          title: "Discord Connected",
+          description: "Your Discord account is now connected.",
+        });
+      }
+    };
+    
+    // Listen for tab navigation events from other components
+    const handleTabNavigation = (event: CustomEvent) => {
+      setActiveTab(event.detail);
+    };
+    
+    document.addEventListener('discordStatus', handleDiscordStatus as EventListener);
+    document.addEventListener('navigateToTab', handleTabNavigation as EventListener);
+    
+    return () => {
+      document.removeEventListener('discordStatus', handleDiscordStatus as EventListener);
+      document.removeEventListener('navigateToTab', handleTabNavigation as EventListener);
+    };
+  }, [toast]);
 
   // Render content based on active tab
   const renderTabContent = () => {
@@ -218,14 +247,50 @@ const Index = () => {
         );
       case 'heatmap':
         return <HeatMap />;
-      case 'discord':
-        return <DiscordIntegration />;
+      case 'discord': {
+        const onDiscordStatusChange = (isLinked: boolean) => {
+          setIsDiscordLinked(isLinked);
+          document.dispatchEvent(
+            new CustomEvent('discordStatus', { detail: { isLinked } })
+          );
+        };
+        
+        return (
+          <div 
+            className="discord-integration-container"
+            onChange={() => onDiscordStatusChange(true)}
+          >
+            <DiscordIntegration />
+          </div>
+        );
+      }
       case 'rewards':
-        return <RewardsSystem />;
+        return <RewardsSystem isDiscordLinked={isDiscordLinked} />;
+      case 'profile':
+        return isLoggedIn ? <ProfilePage /> : (
+          <div className="flex items-center justify-center h-[50vh]">
+            <div className="text-center">
+              <h3 className="text-xl text-white mb-2">Please log in to view your profile</h3>
+              <Button 
+                onClick={handleLoginClick} 
+                className="neon-button mt-4"
+              >
+                Login Now
+              </Button>
+            </div>
+          </div>
+        );
       default:
         return null;
     }
   };
+  
+  // Automatically switch to the dashboard tab when logging out from profile
+  useEffect(() => {
+    if (!isLoggedIn && activeTab === 'profile') {
+      setActiveTab('dashboard');
+    }
+  }, [isLoggedIn, activeTab]);
 
   return (
     <div className="min-h-screen flex flex-col">

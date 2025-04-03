@@ -1,15 +1,21 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { Gift, Trophy, Star, Award, ShieldCheck } from 'lucide-react';
+import { useToast } from '@/hooks/use-toast';
 
-const RewardsSystem = () => {
-  const [currentPoints, setCurrentPoints] = useState(350);
+interface RewardsSystemProps {
+  isDiscordLinked?: boolean;
+}
+
+const RewardsSystem: React.FC<RewardsSystemProps> = ({ isDiscordLinked = false }) => {
+  const [currentPoints, setCurrentPoints] = useState(0);
   const totalPointsNeeded = 1000;
   const progressPercentage = (currentPoints / totalPointsNeeded) * 100;
   
   const [claimedRewards, setClaimedRewards] = useState<string[]>([]);
+  const { toast } = useToast();
   
   const rewards = [
     { id: 'daily_login', title: 'Daily Login', points: 10, description: 'Log in daily to earn points', icon: <ShieldCheck className="h-4 w-4 text-bgmi-blue" /> },
@@ -21,6 +27,12 @@ const RewardsSystem = () => {
   const handleClaimReward = (id: string, points: number) => {
     if (!claimedRewards.includes(id) && currentPoints >= points) {
       setClaimedRewards([...claimedRewards, id]);
+      
+      // Show toast notification
+      toast({
+        title: "Reward Claimed!",
+        description: `You've claimed a reward worth ${points} points.`,
+      });
     }
   };
   
@@ -31,6 +43,19 @@ const RewardsSystem = () => {
     if (points < 1000) return 'Platinum';
     return 'Diamond';
   };
+  
+  // Update progress bar when claiming rewards
+  useEffect(() => {
+    let totalClaimedPoints = 0;
+    claimedRewards.forEach(claimedId => {
+      const reward = rewards.find(r => r.id === claimedId);
+      if (reward) {
+        totalClaimedPoints += reward.points;
+      }
+    });
+    
+    setCurrentPoints(totalClaimedPoints);
+  }, [claimedRewards]);
   
   return (
     <div className="p-6 bg-bgmi-dark border border-bgmi-blue/20 rounded-lg">
@@ -121,32 +146,52 @@ const RewardsSystem = () => {
             })}
           </div>
           
-          <div className="mt-6 bg-bgmi-dark/50 p-4 rounded-md border border-bgmi-blue/10">
-            <h4 className="text-white font-medium mb-2">Leaderboard</h4>
-            <div className="space-y-2">
-              {[
-                { rank: 1, name: "ProGamer123", points: 1520 },
-                { rank: 2, name: "SniperElite", points: 1320 },
-                { rank: 3, name: "BattleMaster", points: 1150 },
-                { rank: 4, name: "TacticalPlayer", points: 980 },
-                { rank: 5, name: "ShroudFan", points: 920 }
-              ].map((player) => (
-                <div key={player.rank} className="flex justify-between items-center bg-bgmi-dark p-2 rounded border border-bgmi-blue/10">
-                  <div className="flex items-center gap-3">
-                    <span className={`w-5 h-5 flex items-center justify-center rounded-full text-xs
-                      ${player.rank === 1 ? 'bg-yellow-500/20 text-yellow-500' : 
-                        player.rank === 2 ? 'bg-gray-400/20 text-gray-400' : 
-                        player.rank === 3 ? 'bg-amber-700/20 text-amber-700' : 'bg-bgmi-blue/20 text-bgmi-blue'
-                      }`}>
-                      {player.rank}
-                    </span>
-                    <p className="text-white text-sm">{player.name}</p>
+          {isDiscordLinked && (
+            <div className="mt-6 bg-bgmi-dark/50 p-4 rounded-md border border-bgmi-blue/10">
+              <h4 className="text-white font-medium mb-2">Leaderboard</h4>
+              <div className="space-y-2">
+                {[
+                  { rank: 1, name: "ProGamer123", points: 1520 },
+                  { rank: 2, name: "SniperElite", points: 1320 },
+                  { rank: 3, name: "BattleMaster", points: 1150 },
+                  { rank: 4, name: "TacticalPlayer", points: 980 },
+                  { rank: 5, name: "ShroudFan", points: 920 }
+                ].map((player) => (
+                  <div key={player.rank} className="flex justify-between items-center bg-bgmi-dark p-2 rounded border border-bgmi-blue/10">
+                    <div className="flex items-center gap-3">
+                      <span className={`w-5 h-5 flex items-center justify-center rounded-full text-xs
+                        ${player.rank === 1 ? 'bg-yellow-500/20 text-yellow-500' : 
+                          player.rank === 2 ? 'bg-gray-400/20 text-gray-400' : 
+                          player.rank === 3 ? 'bg-amber-700/20 text-amber-700' : 'bg-bgmi-blue/20 text-bgmi-blue'
+                        }`}>
+                        {player.rank}
+                      </span>
+                      <p className="text-white text-sm">{player.name}</p>
+                    </div>
+                    <p className="text-bgmi-blue text-sm font-medium">{player.points}</p>
                   </div>
-                  <p className="text-bgmi-blue text-sm font-medium">{player.points}</p>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
-          </div>
+          )}
+          
+          {!isDiscordLinked && (
+            <div className="mt-6 bg-bgmi-blue/5 p-4 rounded-md border border-bgmi-blue/20 text-center">
+              <p className="text-white/70 mb-2">Connect your Discord account to view the leaderboard</p>
+              <Button 
+                variant="outline" 
+                size="sm" 
+                className="text-bgmi-blue border-bgmi-blue/30"
+                onClick={() => {
+                  // Navigate to Discord tab - handle this in Index component
+                  document.dispatchEvent(new CustomEvent('navigateToTab', { detail: 'discord' }));
+                }}
+              >
+                <MessageSquare className="h-4 w-4 mr-2" />
+                Connect Discord Account
+              </Button>
+            </div>
+          )}
         </div>
       </div>
     </div>
