@@ -13,8 +13,8 @@ interface GeminiResponse {
 
 export class GeminiService {
   private apiKey: string;
-  private baseUrl: string = "https://generativelanguage.googleapis.com/v1beta/models";
-  private model: string = "gemini-pro";
+  private baseUrl: string = "https://generativelanguage.googleapis.com/v1";
+  private model: string = "gemini-1.5-pro";
 
   constructor() {
     this.apiKey = API_KEYS.GEMINI;
@@ -23,7 +23,7 @@ export class GeminiService {
   async getAnalysis(prompt: string): Promise<string> {
     try {
       const response = await fetch(
-        `${this.baseUrl}/${this.model}:generateContent?key=${this.apiKey}`,
+        `${this.baseUrl}/models/${this.model}:generateContent?key=${this.apiKey}`,
         {
           method: "POST",
           headers: {
@@ -39,6 +39,12 @@ export class GeminiService {
                 ],
               },
             ],
+            generationConfig: {
+              temperature: 0.7,
+              topK: 40,
+              topP: 0.95,
+              maxOutputTokens: 1024,
+            },
           }),
         }
       );
