@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import ChatInterface from '@/components/ChatInterface';
@@ -10,6 +9,7 @@ import DiscordIntegration from '@/components/DiscordIntegration';
 import RewardsSystem from '@/components/RewardsSystem';
 import WeaponsDatabase from '@/components/WeaponsDatabase';
 import ProfilePage from '@/components/ProfilePage';
+import PlayerAnalysis from '@/components/PlayerAnalysis';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
 import { Lock } from 'lucide-react';
@@ -60,7 +60,6 @@ const Index = () => {
     
     const handleTabNavigation = (event: CustomEvent) => {
       if (!isLoggedIn && event.detail !== 'dashboard') {
-        // Prevent navigating to other tabs if not logged in
         handleLoginClick();
         return;
       }
@@ -95,7 +94,6 @@ const Index = () => {
   };
 
   const renderTabContent = () => {
-    // Always allow dashboard access (with chat)
     if (activeTab === 'dashboard') {
       return (
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -152,12 +150,10 @@ const Index = () => {
       );
     }
     
-    // For all other tabs, check if logged in
     if (!isLoggedIn) {
       return renderLockedFeatureMessage(activeTab.charAt(0).toUpperCase() + activeTab.slice(1));
     }
     
-    // If logged in, show the appropriate tab content
     switch (activeTab) {
       case 'stats':
         return (
@@ -231,6 +227,8 @@ const Index = () => {
       }
       case 'rewards':
         return <RewardsSystem isDiscordLinked={isDiscordLinked} />;
+      case 'player-analysis':
+        return <PlayerAnalysis />;
       case 'profile':
         return <ProfilePage />;
       default:
