@@ -20,8 +20,15 @@ export class GeminiService {
     this.apiKey = API_KEYS.GEMINI;
   }
 
-  async getAnalysis(prompt: string): Promise<string> {
+  async getAnalysis(prompt: string, concise: boolean = true): Promise<string> {
     try {
+      // Add conciseness instruction to the prompt
+      const concisePrefix = concise 
+        ? "Be concise and to the point in your response. Focus on the most important information. " 
+        : "Provide a detailed and comprehensive response. ";
+      
+      const enhancedPrompt = concisePrefix + prompt;
+
       const response = await fetch(
         `${this.baseUrl}/models/${this.model}:generateContent?key=${this.apiKey}`,
         {
@@ -34,7 +41,7 @@ export class GeminiService {
               {
                 parts: [
                   {
-                    text: prompt,
+                    text: enhancedPrompt,
                   },
                 ],
               },
@@ -77,16 +84,22 @@ export class GeminiService {
       5. Map positioning recommendations
       6. Best drop locations based on play style
       
-      Keep the analysis detailed but actionable. Format your response with clear sections and bullet points.
+      Keep the analysis concise but actionable. Format your response with clear sections and bullet points.
     `;
 
     return this.getAnalysis(prompt);
   }
 
   async getCustomAnswer(question: string, contextData: any = null): Promise<string> {
+    // Detect if user is asking for an elaborate answer
+    const wantsElaborate = question.toLowerCase().includes("explain in detail") || 
+                          question.toLowerCase().includes("elaborate") ||
+                          question.toLowerCase().includes("comprehensive") ||
+                          question.toLowerCase().includes("in depth");
+    
     let prompt = `
       You are GameAid, an AI assistant specialized in Battle Grounds Mobile India (BGMI) and PUBG. 
-      Provide a detailed and helpful response to the following question:
+      Provide a ${wantsElaborate ? 'detailed' : 'concise'} response to the following question:
       
       "${question}"
     `;
@@ -96,13 +109,14 @@ export class GeminiService {
     }
 
     prompt += `\n\nMake your response specific to BGMI/PUBG gameplay, using appropriate terminology and game-specific advice.`;
-
-    return this.getAnalysis(prompt);
+    
+    // Pass the elaborate flag to getAnalysis
+    return this.getAnalysis(prompt, !wantsElaborate);
   }
 
   async getMapAnalysis(mapName: string): Promise<string> {
     const prompt = `
-      Provide a detailed strategic analysis of the "${mapName}" map in BGMI/PUBG. 
+      Provide a concise strategic analysis of the "${mapName}" map in BGMI/PUBG. 
       Include information about:
       
       1. Best drop locations for different play styles (aggressive, passive, balanced)
@@ -121,7 +135,7 @@ export class GeminiService {
 
   async getWeaponAnalysis(weaponName: string): Promise<string> {
     const prompt = `
-      Provide a detailed analysis of the "${weaponName}" in BGMI/PUBG including:
+      Provide a concise analysis of the "${weaponName}" in BGMI/PUBG including:
       
       1. Weapon statistics (damage, fire rate, reload time)
       2. Best attachment combinations

@@ -16,7 +16,7 @@ interface Message {
 const INITIAL_MESSAGES: Message[] = [
   {
     id: '1',
-    content: "👋 Welcome to GameAid! I can help you improve your gameplay with stats analysis, weapon recommendations, and tactics. What would you like to know?",
+    content: "👋 Welcome to GameAid! I can help you improve your gameplay with stats analysis, weapon recommendations, and tactics. I'll keep my answers concise, but feel free to ask me to elaborate if you need more details. What would you like to know?",
     sender: 'bot',
     timestamp: new Date(),
   },
@@ -62,7 +62,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
     setIsTyping(true);
     
     try {
-      // Use Gemini API for response
+      // Use Gemini API for response with enhanced prompt detection
       const userContext = isLoggedIn ? userDatabaseService.getUserData('player@example.com') : null;
       const response = await geminiService.getCustomAnswer(input, userContext);
       
