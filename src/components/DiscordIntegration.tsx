@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { MessageSquare, ExternalLink, Copy, Mail } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { API_KEYS } from '@/utils/apiKeys';
 
 const DiscordIntegration = () => {
   const [discordUsername, setDiscordUsername] = useState('');
@@ -11,6 +12,7 @@ const DiscordIntegration = () => {
   const [verificationSent, setVerificationSent] = useState(false);
   const [isLinked, setIsLinked] = useState(false);
   const { toast } = useToast();
+  const discordClientId = API_KEYS.DISCORD.CLIENT_ID;
   
   const handleSendVerification = () => {
     if (!discordUsername) {
@@ -66,14 +68,14 @@ const DiscordIntegration = () => {
   };
   
   return (
-    <div className="p-6 bg-bgmi-dark border border-bgmi-blue/20 rounded-lg">
+    <div className="p-6 bg-bgmi-dark border border-bgmi-blue/20 rounded-lg shadow-lg">
       <h2 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
         <MessageSquare className="h-5 w-5 text-bgmi-blue" />
         Discord Integration
       </h2>
       
       {!isLinked ? (
-        <div className="bg-bgmi-darker p-5 rounded-lg border border-bgmi-blue/20 max-w-md mx-auto">
+        <div className="bg-bgmi-darker p-5 rounded-lg border border-bgmi-blue/20 max-w-md mx-auto shadow-[0_0_15px_rgba(0,255,255,0.1)]">
           {!verificationSent ? (
             <>
               <h3 className="text-white font-medium mb-4">Link Your Discord Account</h3>
@@ -182,7 +184,7 @@ const DiscordIntegration = () => {
           
           <div className="text-center">
             <Button variant="outline" className="text-white border-bgmi-blue/30" asChild>
-              <a href="https://discord.com/api/oauth2/authorize" target="_blank" rel="noopener noreferrer">
+              <a href={`https://discord.com/api/oauth2/authorize?client_id=${discordClientId}&permissions=8&scope=bot`} target="_blank" rel="noopener noreferrer">
                 <ExternalLink className="h-4 w-4 mr-2" />
                 Add GameAid Bot to Server
               </a>
