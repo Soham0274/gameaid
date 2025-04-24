@@ -121,6 +121,7 @@ export type Database = {
       profiles: {
         Row: {
           avatar_url: string | null
+          bgmi_api_key: string | null
           bgmi_id: string | null
           bgmi_username: string | null
           created_at: string
@@ -133,6 +134,7 @@ export type Database = {
         }
         Insert: {
           avatar_url?: string | null
+          bgmi_api_key?: string | null
           bgmi_id?: string | null
           bgmi_username?: string | null
           created_at?: string
@@ -145,6 +147,7 @@ export type Database = {
         }
         Update: {
           avatar_url?: string | null
+          bgmi_api_key?: string | null
           bgmi_id?: string | null
           bgmi_username?: string | null
           created_at?: string

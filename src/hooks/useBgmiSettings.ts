@@ -36,11 +36,9 @@ export const useBgmiSettings = () => {
       await bgmiService.testApiKey(apiKey);
       
       // If successful, save the API key to the user's profile
-      // Using a custom field that we're adding via SQL but isn't in the auto-generated types
       const { error } = await supabase
         .from('profiles')
         .update({ 
-          // We now use our extended type that includes the bgmi_api_key property
           bgmi_api_key: apiKey 
         })
         .eq('id', user.id);
