@@ -1,52 +1,13 @@
 
-import React, { useState } from 'react';
+import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Key, Save, Loader2 } from 'lucide-react';
-import { useToast } from '@/hooks/use-toast';
-import { userDatabaseService } from '@/services/userDatabaseService';
-import { bgmiService } from '@/services/bgmiService';
+import useBgmiSettings from '@/hooks/useBgmiSettings';
 
 const BGMISettings = () => {
-  const [apiKey, setApiKey] = useState('');
-  const [testing, setTesting] = useState(false);
-  const { toast } = useToast();
-
-  const handleSaveApiKey = async () => {
-    if (!apiKey.trim()) {
-      toast({
-        title: 'Error',
-        description: 'Please enter a valid API key',
-        variant: 'destructive',
-      });
-      return;
-    }
-
-    setTesting(true);
-    try {
-      // Test the API key by making a sample request
-      await bgmiService.testApiKey(apiKey);
-      
-      // If successful, save the API key
-      userDatabaseService.updateUserData('player@example.com', {
-        bgmiApiKey: apiKey
-      });
-      
-      toast({
-        title: 'Success',
-        description: 'BGMI API key has been saved and verified',
-      });
-    } catch (error) {
-      toast({
-        title: 'Error',
-        description: 'Invalid API key. Please check and try again.',
-        variant: 'destructive',
-      });
-    } finally {
-      setTesting(false);
-    }
-  };
+  const { apiKey, setApiKey, testing, handleSaveApiKey } = useBgmiSettings();
 
   return (
     <Card className="bg-bgmi-dark border border-bgmi-blue/20">
