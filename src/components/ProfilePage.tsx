@@ -1,11 +1,9 @@
-
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { User, Mail, Shield, MessageSquare, Camera, Mic, Image, Calendar } from 'lucide-react';
+import { User, Mail, Shield, MessageSquare } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
-import { userDatabaseService } from '@/services/userDatabaseService';
-import { formatDistanceToNow } from 'date-fns';
+import BGMISettings from './BGMISettings';
 
 const ProfilePage = () => {
   const [profile, setProfile] = useState({
@@ -208,7 +206,6 @@ const ProfilePage = () => {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div className="md:col-span-1 bg-bgmi-darker p-5 rounded-lg border border-bgmi-blue/20">
           <div className="text-center">
-            {/* Profile Photo */}
             <div 
               className="w-24 h-24 rounded-full bg-bgmi-blue/20 flex items-center justify-center mx-auto mb-4 overflow-hidden cursor-pointer"
               onClick={handlePhotoUpload}
@@ -235,7 +232,6 @@ const ProfilePage = () => {
             <h3 className="text-white font-medium">{profile.username}</h3>
             <p className="text-white/60 text-sm">{profile.gameId}</p>
             
-            {/* Status Badges */}
             <div className="flex justify-center gap-2 mt-4">
               <div className="flex items-center text-xs text-white/70 bg-bgmi-blue/10 px-2 py-1 rounded-full">
                 <span className="w-2 h-2 bg-green-500 rounded-full mr-1"></span>
@@ -247,7 +243,6 @@ const ProfilePage = () => {
               </div>
             </div>
             
-            {/* Account timestamps */}
             <div className="mt-4 pt-4 border-t border-bgmi-blue/10">
               <div className="flex items-center justify-center text-xs text-white/60 mb-1">
                 <Calendar className="h-3 w-3 mr-1 text-bgmi-blue" />
@@ -259,7 +254,6 @@ const ProfilePage = () => {
               </div>
             </div>
             
-            {/* Voice message controls */}
             <div className="mt-4 pt-4 border-t border-bgmi-blue/10">
               <p className="text-white/70 text-xs mb-2">Voice Message</p>
               <div className="flex justify-center gap-2">
@@ -372,6 +366,10 @@ const ProfilePage = () => {
             </div>
           </div>
         </div>
+      </div>
+      
+      <div className="mt-6">
+        <BGMISettings />
       </div>
     </div>
   );

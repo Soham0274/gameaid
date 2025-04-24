@@ -1,10 +1,10 @@
-
 export interface UserData {
   username: string;
   email: string;
   gameId?: string;
-  profilePhoto?: string; // Base64 encoded photo
-  voiceMessage?: string; // Base64 encoded audio
+  bgmiApiKey?: string;
+  profilePhoto?: string;
+  voiceMessage?: string;
   loginTime: number;
   loginCount: number;
   registrationTime?: number;

@@ -1,5 +1,5 @@
-
 import { API_KEYS } from "@/utils/apiKeys";
+import { userDatabaseService } from "./userDatabaseService";
 
 export interface BGMIPlayer {
   id: string;
@@ -72,18 +72,41 @@ export interface BGMIMap {
 }
 
 export class BGMIService {
-  private apiKey: string;
   private baseUrl: string = "https://api.pubg.com/shards/kakao";
 
-  constructor() {
-    this.apiKey = API_KEYS.BGMI;
+  private getApiKey(): string {
+    const userData = userDatabaseService.getUserData('player@example.com');
+    return userData?.bgmiApiKey || API_KEYS.BGMI;
   }
 
   private getHeaders() {
     return {
-      "Authorization": `Bearer ${this.apiKey}`,
+      "Authorization": `Bearer ${this.getApiKey()}`,
       "Accept": "application/vnd.api+json"
     };
+  }
+
+  async testApiKey(apiKey: string): Promise<boolean> {
+    try {
+      const response = await fetch(
+        `${this.baseUrl}/players?filter[playerNames]=test`,
+        {
+          headers: {
+            "Authorization": `Bearer ${apiKey}`,
+            "Accept": "application/vnd.api+json"
+          }
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error(`BGMI API error: ${response.status}`);
+      }
+
+      return true;
+    } catch (error) {
+      console.error("Error testing BGMI API key:", error);
+      throw error;
+    }
   }
 
   async searchPlayerByName(playerName: string): Promise<BGMIPlayer[]> {
