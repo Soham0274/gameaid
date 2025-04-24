@@ -3,8 +3,11 @@ export interface UserData {
   username: string;
   email: string;
   gameId?: string;
+  profilePhoto?: string; // Base64 encoded photo
+  voiceMessage?: string; // Base64 encoded audio
   loginTime: number;
   loginCount: number;
+  registrationTime?: number;
   lastSearchedPlayers?: string[];
   favoriteWeapons?: string[];
   favoriteMaps?: string[];
@@ -12,6 +15,11 @@ export interface UserData {
     date: number;
     duration: number;
   }[];
+  linkedAccounts?: {
+    discord: boolean;
+    facebook: boolean;
+    google: boolean;
+  };
 }
 
 export class UserDatabaseService {
@@ -29,6 +37,8 @@ export class UserDatabaseService {
 
   saveUser(userData: Partial<UserData>): void {
     const existingData = this.getUserData(userData.email || '');
+    const isNewUser = !existingData;
+    
     const updatedData = {
       ...existingData,
       ...userData,
@@ -39,6 +49,11 @@ export class UserDatabaseService {
         { date: Date.now(), duration: 0 }
       ]
     };
+    
+    // Set registration time only for new users
+    if (isNewUser) {
+      updatedData.registrationTime = Date.now();
+    }
     
     const allUsers = this.getAllUsers();
     allUsers[userData.email || ''] = updatedData;
@@ -83,6 +98,14 @@ export class UserDatabaseService {
     ].slice(0, 10); // Keep only last 10 searches
     
     this.updateUserData(email, { lastSearchedPlayers: updatedPlayers });
+  }
+
+  saveProfilePhoto(email: string, photoData: string): void {
+    this.updateUserData(email, { profilePhoto: photoData });
+  }
+  
+  saveVoiceMessage(email: string, voiceData: string): void {
+    this.updateUserData(email, { voiceMessage: voiceData });
   }
 
   clearUserData(): void {

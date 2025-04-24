@@ -6,6 +6,7 @@ import { Label } from '@/components/ui/label';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { X, UserPlus, LogIn } from 'lucide-react';
+import { userDatabaseService } from '@/services/userDatabaseService';
 
 interface LoginModalProps {
   isOpen: boolean;
@@ -15,10 +16,47 @@ interface LoginModalProps {
 
 const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, onSuccess }) => {
   const [activeTab, setActiveTab] = useState<'login' | 'register'>('login');
+  const [loginData, setLoginData] = useState({
+    email: '',
+    password: '',
+  });
+  const [registerData, setRegisterData] = useState({
+    name: '',
+    email: '',
+    password: '',
+    gameId: '',
+  });
   
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleLoginSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    
     // In a real app, we would authenticate the user here
+    // For demo purposes, we'll just save the login data
+    userDatabaseService.saveUser({
+      username: loginData.email.split('@')[0],
+      email: loginData.email,
+    });
+    
+    onSuccess();
+    onClose();
+  };
+  
+  const handleRegisterSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    // In a real app, we would create a new user account here
+    // For demo purposes, we'll just save the registration data
+    userDatabaseService.saveUser({
+      username: registerData.name,
+      email: registerData.email,
+      gameId: registerData.gameId,
+      linkedAccounts: {
+        discord: false,
+        facebook: false,
+        google: false,
+      }
+    });
+    
     onSuccess();
     onClose();
   };
@@ -49,14 +87,29 @@ const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, onSuccess }) =
           </TabsList>
           
           <TabsContent value="login">
-            <form onSubmit={handleSubmit} className="space-y-4">
+            <form onSubmit={handleLoginSubmit} className="space-y-4">
               <div className="space-y-2">
                 <Label htmlFor="email" className="text-white">Email</Label>
-                <Input id="email" type="email" placeholder="your@email.com" className="bg-bgmi-darker border-bgmi-blue/30 text-white" required />
+                <Input 
+                  id="email" 
+                  type="email" 
+                  placeholder="your@email.com" 
+                  className="bg-bgmi-darker border-bgmi-blue/30 text-white" 
+                  value={loginData.email}
+                  onChange={(e) => setLoginData({...loginData, email: e.target.value})}
+                  required 
+                />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="password" className="text-white">Password</Label>
-                <Input id="password" type="password" className="bg-bgmi-darker border-bgmi-blue/30 text-white" required />
+                <Input 
+                  id="password" 
+                  type="password" 
+                  className="bg-bgmi-darker border-bgmi-blue/30 text-white" 
+                  value={loginData.password}
+                  onChange={(e) => setLoginData({...loginData, password: e.target.value})}
+                  required 
+                />
               </div>
               <div className="flex justify-between items-center text-xs">
                 <a href="#" className="text-bgmi-blue hover:underline">Forgot password?</a>
@@ -69,22 +122,50 @@ const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, onSuccess }) =
           </TabsContent>
           
           <TabsContent value="register">
-            <form onSubmit={handleSubmit} className="space-y-4">
+            <form onSubmit={handleRegisterSubmit} className="space-y-4">
               <div className="space-y-2">
                 <Label htmlFor="reg-name" className="text-white">Name</Label>
-                <Input id="reg-name" placeholder="Your name" className="bg-bgmi-darker border-bgmi-blue/30 text-white" required />
+                <Input 
+                  id="reg-name" 
+                  placeholder="Your name" 
+                  className="bg-bgmi-darker border-bgmi-blue/30 text-white" 
+                  value={registerData.name}
+                  onChange={(e) => setRegisterData({...registerData, name: e.target.value})}
+                  required 
+                />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="reg-email" className="text-white">Email</Label>
-                <Input id="reg-email" type="email" placeholder="your@email.com" className="bg-bgmi-darker border-bgmi-blue/30 text-white" required />
+                <Input 
+                  id="reg-email" 
+                  type="email" 
+                  placeholder="your@email.com" 
+                  className="bg-bgmi-darker border-bgmi-blue/30 text-white" 
+                  value={registerData.email}
+                  onChange={(e) => setRegisterData({...registerData, email: e.target.value})}
+                  required 
+                />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="reg-password" className="text-white">Password</Label>
-                <Input id="reg-password" type="password" className="bg-bgmi-darker border-bgmi-blue/30 text-white" required />
+                <Input 
+                  id="reg-password" 
+                  type="password" 
+                  className="bg-bgmi-darker border-bgmi-blue/30 text-white" 
+                  value={registerData.password}
+                  onChange={(e) => setRegisterData({...registerData, password: e.target.value})}
+                  required 
+                />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="game-id" className="text-white">Game ID (Optional)</Label>
-                <Input id="game-id" placeholder="Your Game ID" className="bg-bgmi-darker border-bgmi-blue/30 text-white" />
+                <Input 
+                  id="game-id" 
+                  placeholder="Your Game ID" 
+                  className="bg-bgmi-darker border-bgmi-blue/30 text-white" 
+                  value={registerData.gameId}
+                  onChange={(e) => setRegisterData({...registerData, gameId: e.target.value})}
+                />
               </div>
               <Button type="submit" className="w-full neon-button flex items-center gap-2">
                 <UserPlus className="h-4 w-4" />

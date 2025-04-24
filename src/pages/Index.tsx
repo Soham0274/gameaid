@@ -20,6 +20,7 @@ const Index = () => {
   const [isLoginModalOpen, setIsLoginModalOpen] = useState<boolean>(false);
   const [activeTab, setActiveTab] = useState<string>('dashboard');
   const [isDiscordLinked, setIsDiscordLinked] = useState<boolean>(false);
+  const [currentUserEmail, setCurrentUserEmail] = useState<string>('player@example.com');
   const { toast } = useToast();
 
   const handleLoginClick = () => {
