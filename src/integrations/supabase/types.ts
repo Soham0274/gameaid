@@ -9,7 +9,154 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      [_ in never]: never
+      match_history: {
+        Row: {
+          damage_dealt: number | null
+          id: string
+          kills: number | null
+          map_name: string | null
+          match_id: string
+          match_type: string | null
+          placement: number | null
+          played_at: string
+          profile_id: string | null
+          survival_time: number | null
+        }
+        Insert: {
+          damage_dealt?: number | null
+          id?: string
+          kills?: number | null
+          map_name?: string | null
+          match_id: string
+          match_type?: string | null
+          placement?: number | null
+          played_at?: string
+          profile_id?: string | null
+          survival_time?: number | null
+        }
+        Update: {
+          damage_dealt?: number | null
+          id?: string
+          kills?: number | null
+          map_name?: string | null
+          match_id?: string
+          match_type?: string | null
+          placement?: number | null
+          played_at?: string
+          profile_id?: string | null
+          survival_time?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "match_history_profile_id_fkey"
+            columns: ["profile_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      player_stats: {
+        Row: {
+          accuracy: number | null
+          assists: number | null
+          bgmi_id: string
+          deaths: number | null
+          headshot_percentage: number | null
+          id: string
+          kills: number | null
+          profile_id: string | null
+          season_id: string | null
+          tier_level: number | null
+          tier_name: string | null
+          top_10s: number | null
+          total_matches: number | null
+          updated_at: string
+          wins: number | null
+        }
+        Insert: {
+          accuracy?: number | null
+          assists?: number | null
+          bgmi_id: string
+          deaths?: number | null
+          headshot_percentage?: number | null
+          id?: string
+          kills?: number | null
+          profile_id?: string | null
+          season_id?: string | null
+          tier_level?: number | null
+          tier_name?: string | null
+          top_10s?: number | null
+          total_matches?: number | null
+          updated_at?: string
+          wins?: number | null
+        }
+        Update: {
+          accuracy?: number | null
+          assists?: number | null
+          bgmi_id?: string
+          deaths?: number | null
+          headshot_percentage?: number | null
+          id?: string
+          kills?: number | null
+          profile_id?: string | null
+          season_id?: string | null
+          tier_level?: number | null
+          tier_name?: string | null
+          top_10s?: number | null
+          total_matches?: number | null
+          updated_at?: string
+          wins?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "player_stats_profile_id_fkey"
+            columns: ["profile_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      profiles: {
+        Row: {
+          avatar_url: string | null
+          bgmi_id: string | null
+          bgmi_username: string | null
+          created_at: string
+          email: string | null
+          id: string
+          is_verified: boolean | null
+          role: Database["public"]["Enums"]["user_role"]
+          updated_at: string
+          username: string | null
+        }
+        Insert: {
+          avatar_url?: string | null
+          bgmi_id?: string | null
+          bgmi_username?: string | null
+          created_at?: string
+          email?: string | null
+          id: string
+          is_verified?: boolean | null
+          role?: Database["public"]["Enums"]["user_role"]
+          updated_at?: string
+          username?: string | null
+        }
+        Update: {
+          avatar_url?: string | null
+          bgmi_id?: string | null
+          bgmi_username?: string | null
+          created_at?: string
+          email?: string | null
+          id?: string
+          is_verified?: boolean | null
+          role?: Database["public"]["Enums"]["user_role"]
+          updated_at?: string
+          username?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
@@ -18,7 +165,7 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      user_role: "user" | "admin"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -133,6 +280,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      user_role: ["user", "admin"],
+    },
   },
 } as const
