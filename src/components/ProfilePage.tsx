@@ -1,9 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { User, Mail, Shield, MessageSquare } from 'lucide-react';
+import { User, Mail, Shield, MessageSquare, Calendar, Mic } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { userDatabaseService } from '@/services/userDatabaseService';
 import BGMISettings from './BGMISettings';
+import { formatDistanceToNow } from 'date-fns';
 
 const ProfilePage = () => {
   const [profile, setProfile] = useState({
