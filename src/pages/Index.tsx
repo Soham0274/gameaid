@@ -98,12 +98,15 @@ const Index = () => {
     if (activeTab === 'dashboard') {
       return (
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <div className="lg:col-span-2 h-[calc(100vh-180px)]">
-            <ChatInterface 
-              questionsLeft={questionsLeft} 
-              isLoggedIn={isLoggedIn}
-              onLoginRequest={handleLoginClick}
-            />
+          <div className="lg:col-span-2 space-y-6">
+            <div className="h-[calc(100vh-280px)]">
+              <ChatInterface 
+                questionsLeft={questionsLeft} 
+                isLoggedIn={isLoggedIn}
+                onLoginRequest={handleLoginClick}
+              />
+            </div>
+            {isLoggedIn && <PlayerAnalysis />}
           </div>
           
           <div className="space-y-6">
@@ -113,34 +116,34 @@ const Index = () => {
                 <RecommendationsCard />
               </>
             ) : (
-              <div className="bg-bgmi-dark p-6 border border-bgmi-blue/20 rounded-lg">
-                <h3 className="text-white font-medium mb-3">Premium Features</h3>
-                <p className="text-white/70 mb-4">Log in to unlock all GameAid features:</p>
+              <div className="bg-white p-6 border border-gray-200 rounded-lg shadow-sm">
+                <h3 className="text-gray-800 font-medium mb-3">Premium Features</h3>
+                <p className="text-gray-600 mb-4">Log in to unlock all GameAid features:</p>
                 <ul className="space-y-2 mb-4">
-                  <li className="flex items-center text-white/70">
-                    <span className="h-2 w-2 rounded-full bg-bgmi-blue mr-2"></span>
+                  <li className="flex items-center text-gray-600">
+                    <span className="h-2 w-2 rounded-full bg-blue-500 mr-2"></span>
                     Detailed gameplay statistics
                   </li>
-                  <li className="flex items-center text-white/70">
-                    <span className="h-2 w-2 rounded-full bg-bgmi-blue mr-2"></span>
+                  <li className="flex items-center text-gray-600">
+                    <span className="h-2 w-2 rounded-full bg-blue-500 mr-2"></span>
                     Custom weapon recommendations
                   </li>
-                  <li className="flex items-center text-white/70">
-                    <span className="h-2 w-2 rounded-full bg-bgmi-blue mr-2"></span>
-                    Heatmaps and drop location guides
+                  <li className="flex items-center text-gray-600">
+                    <span className="h-2 w-2 rounded-full bg-blue-500 mr-2"></span>
+                    Maps and drop location guides
                   </li>
-                  <li className="flex items-center text-white/70">
-                    <span className="h-2 w-2 rounded-full bg-bgmi-blue mr-2"></span>
+                  <li className="flex items-center text-gray-600">
+                    <span className="h-2 w-2 rounded-full bg-blue-500 mr-2"></span>
                     Discord integration
                   </li>
-                  <li className="flex items-center text-white/70">
-                    <span className="h-2 w-2 rounded-full bg-bgmi-blue mr-2"></span>
+                  <li className="flex items-center text-gray-600">
+                    <span className="h-2 w-2 rounded-full bg-blue-500 mr-2"></span>
                     Unlimited AI assistant questions
                   </li>
                 </ul>
                 <Button 
                   onClick={handleLoginClick} 
-                  className="neon-button w-full"
+                  className="w-full bg-blue-500 hover:bg-blue-600 text-white transition-colors"
                 >
                   Login Now
                 </Button>
@@ -244,7 +247,7 @@ const Index = () => {
   }, [isLoggedIn, activeTab]);
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col bg-gray-50">
       <Navbar 
         onLoginClick={handleLoginClick} 
         questionsLeft={isLoggedIn ? undefined : questionsLeft} 

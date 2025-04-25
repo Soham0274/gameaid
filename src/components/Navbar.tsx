@@ -41,13 +41,13 @@ const Navbar: React.FC<NavbarProps> = ({
   };
 
   return (
-    <header className="border-b border-bgmi-blue/20 bg-bgmi-dark/90 backdrop-blur-md sticky top-0 z-50">
+    <header className="border-b border-gray-200 bg-white shadow-sm sticky top-0 z-50">
       <div className="container flex h-16 items-center justify-between">
         <div className="flex items-center gap-2">
-          <Menu className="h-6 w-6 text-bgmi-blue md:hidden" />
+          <Menu className="h-6 w-6 text-blue-500 md:hidden" />
           <div className="flex items-center gap-1">
-            <span className="font-bold text-2xl text-white">Game</span>
-            <span className="font-bold text-2xl text-bgmi-blue text-glow">Aid</span>
+            <span className="font-bold text-2xl text-gray-800">Game</span>
+            <span className="font-bold text-2xl text-blue-500">Aid</span>
           </div>
         </div>
         
@@ -58,8 +58,8 @@ const Navbar: React.FC<NavbarProps> = ({
               className={cn(
                 "text-sm font-medium transition-colors px-1 py-1 whitespace-nowrap",
                 activeTab === tab.id 
-                  ? "text-bgmi-blue border-b-2 border-bgmi-blue" 
-                  : "text-white hover:text-bgmi-blue"
+                  ? "text-blue-500 border-b-2 border-blue-500" 
+                  : "text-gray-600 hover:text-blue-500"
               )}
               onClick={() => onTabChange(tab.id)}
             >
@@ -70,17 +70,17 @@ const Navbar: React.FC<NavbarProps> = ({
         
         <div className="flex items-center gap-4">
           <div className="relative hidden md:flex items-center">
-            <Search className="absolute left-2.5 h-4 w-4 text-white/50" />
+            <Search className="absolute left-2.5 h-4 w-4 text-gray-400" />
             <input
               type="search"
               placeholder="Search stats, weapons..."
-              className="bg-bgmi-dark border border-bgmi-blue/30 rounded-md h-9 w-[200px] pl-8 text-sm text-white focus:outline-none focus:ring-1 focus:ring-bgmi-blue"
+              className="bg-gray-50 border border-gray-200 rounded-md h-9 w-[200px] pl-8 text-sm text-gray-600 focus:outline-none focus:ring-1 focus:ring-blue-500"
             />
           </div>
           
           {!isLoggedIn && questionsLeft !== undefined && (
-            <div className="text-xs text-white">
-              <span className="font-medium text-bgmi-blue">{questionsLeft}</span> questions left
+            <div className="text-xs text-gray-600">
+              <span className="font-medium text-blue-500">{questionsLeft}</span> questions left
             </div>
           )}
           
@@ -88,20 +88,25 @@ const Navbar: React.FC<NavbarProps> = ({
             <div className="flex items-center gap-2">
               <Button 
                 variant="outline" 
-                className="flex items-center gap-2 border-bgmi-blue/30 text-white bg-bgmi-dark/90"
+                className="flex items-center gap-2 border-gray-200 text-gray-700 bg-white"
                 onClick={() => onTabChange('profile')}
               >
-                <User className="h-4 w-4 text-bgmi-blue" />
+                <User className="h-4 w-4 text-blue-500" />
                 <span>Profile</span>
               </Button>
-              <Button variant="ghost" size="icon" onClick={onLogout} className="text-white hover:text-bgmi-blue">
+              <Button 
+                variant="ghost" 
+                size="icon" 
+                onClick={onLogout} 
+                className="text-gray-600 hover:text-blue-500"
+              >
                 <LogOut className="h-4 w-4" />
               </Button>
             </div>
           ) : (
             <Button 
               variant="outline" 
-              className="neon-button bg-bgmi-dark/90 text-white" 
+              className="bg-blue-500 hover:bg-blue-600 text-white transition-colors border-0" 
               onClick={onLoginClick}
             >
               <User className="h-4 w-4 mr-2" />

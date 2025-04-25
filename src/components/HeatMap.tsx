@@ -8,17 +8,14 @@ interface HeatMapProps {
   onLoginRequest?: () => void;
 }
 
-const HeatMap: React.FC<HeatMapProps> = ({ 
-  isLoggedIn = false, 
-  onLoginRequest 
-}) => {
+const HeatMap: React.FC<HeatMapProps> = ({ isLoggedIn = false, onLoginRequest }) => {
   const [selectedMap, setSelectedMap] = useState("erangel");
   
   const mapImages = {
-    erangel: "/lovable-uploads/1005e1f8-411f-4749-9f4a-2cc93ecb025c.png",
-    miramar: "https://media.discordapp.net/attachments/1232390066248175647/1232390249909940345/miramar-heatmap.jpg",
-    sanhok: "https://media.discordapp.net/attachments/1232390066248175647/1232390250316787833/sanhok-heatmap.jpg",
-    vikendi: "https://media.discordapp.net/attachments/1232390066248175647/1232390250731458630/vikendi-heatmap.jpg"
+    erangel: "/lovable-uploads/875d5c20-4928-4096-8cf1-224522e15e1d.png",
+    miramar: "/lovable-uploads/e54c7d20-44f8-47e3-9afc-9162b2604b6d.png",
+    sanhok: "/lovable-uploads/5596262a-b0f8-4c2d-b858-60397551449d.png",
+    vikendi: "/lovable-uploads/c72f41c7-c3c4-49ad-b64a-f93f278857d5.png"
   };
   
   const mapLocations = {
@@ -56,13 +53,13 @@ const HeatMap: React.FC<HeatMapProps> = ({
   };
   
   const renderRatingBars = (rating: number, type: 'loot' | 'risk') => {
-    const color = type === 'loot' ? 'bg-bgmi-blue' : 'bg-red-500';
+    const color = type === 'loot' ? 'bg-blue-500' : 'bg-red-500';
     return (
       <div className="flex items-center space-x-1 mt-1">
         {[...Array(5)].map((_, index) => (
           <div 
             key={index} 
-            className={`h-1.5 w-5 ${index < rating ? color : 'bg-white/20'} rounded-sm`}
+            className={`h-1.5 w-5 ${index < rating ? color : 'bg-gray-200'} rounded-sm`}
           />
         ))}
       </div>
@@ -71,13 +68,13 @@ const HeatMap: React.FC<HeatMapProps> = ({
   
   if (!isLoggedIn) {
     return (
-      <div className="p-6 bg-bgmi-dark border border-bgmi-blue/20 rounded-lg">
+      <div className="p-6 bg-white shadow-lg rounded-lg border border-gray-200">
         <div className="flex items-center justify-center flex-col py-12">
-          <h2 className="text-xl font-bold text-white mb-4 text-glow">Drop Location Heatmaps</h2>
-          <p className="text-white/70 mb-6 text-center">Please log in to access the heatmap feature.</p>
+          <h2 className="text-xl font-bold text-gray-800 mb-4">Drop Location Maps</h2>
+          <p className="text-gray-600 mb-6 text-center">Please log in to access the map feature.</p>
           <Button 
             onClick={onLoginRequest} 
-            className="neon-button"
+            className="bg-blue-500 hover:bg-blue-600 text-white transition-colors"
           >
             <User className="h-4 w-4 mr-2" />
             Login to Access
@@ -88,55 +85,63 @@ const HeatMap: React.FC<HeatMapProps> = ({
   }
   
   return (
-    <div className="p-6 bg-bgmi-dark border border-bgmi-blue/20 rounded-lg">
-      <h2 className="text-xl font-bold text-white mb-4 text-glow">Drop Location Heatmaps</h2>
+    <div className="p-6 bg-white shadow-lg rounded-lg border border-gray-200">
+      <h2 className="text-xl font-bold text-gray-800 mb-4">Drop Location Maps</h2>
       
       <div className="mb-6">
-        <p className="text-white mb-3 bg-bgmi-darker px-3 py-1 rounded-md inline-block">Select a map to view popular landing spots and high-traffic areas</p>
+        <p className="text-gray-600 mb-3 bg-gray-50 px-3 py-1 rounded-md inline-block">
+          Select a map to view popular landing spots and high-traffic areas
+        </p>
         <Select value={selectedMap} onValueChange={setSelectedMap}>
-          <SelectTrigger className="w-full md:w-[200px] bg-bgmi-darker border-bgmi-blue/30 text-white">
+          <SelectTrigger className="w-full md:w-[200px] bg-white border-gray-200">
             <SelectValue placeholder="Select a map" />
           </SelectTrigger>
-          <SelectContent className="bg-bgmi-darker border-bgmi-blue/30">
-            <SelectItem value="erangel" className="text-white">Erangel</SelectItem>
-            <SelectItem value="miramar" className="text-white">Miramar</SelectItem>
-            <SelectItem value="sanhok" className="text-white">Sanhok</SelectItem>
-            <SelectItem value="vikendi" className="text-white">Vikendi</SelectItem>
+          <SelectContent className="bg-white border-gray-200">
+            <SelectItem value="erangel">Erangel</SelectItem>
+            <SelectItem value="miramar">Miramar</SelectItem>
+            <SelectItem value="sanhok">Sanhok</SelectItem>
+            <SelectItem value="vikendi">Vikendi</SelectItem>
           </SelectContent>
         </Select>
       </div>
       
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="bg-bgmi-darker p-4 rounded-lg border border-bgmi-blue/20 transition-all duration-300 hover:border-bgmi-blue/50">
+        <div className="bg-white p-4 rounded-lg border border-gray-200 shadow-sm transition-all duration-300 hover:shadow-md">
           <img 
             src={mapImages[selectedMap as keyof typeof mapImages]} 
             alt={`${selectedMap.charAt(0).toUpperCase() + selectedMap.slice(1)} map layout`}
-            className="w-full h-auto rounded border border-bgmi-blue/20"
+            className="w-full h-auto rounded border border-gray-200"
             width="671"
             height="671"
             onError={(e) => {
               console.error(`Failed to load image for ${selectedMap}`);
-              e.currentTarget.src = "https://placehold.co/671x671/0f172a/4d7fea?text=Map+Image+Unavailable";
+              e.currentTarget.src = "https://placehold.co/671x671/f8fafc/64748b?text=Map+Image+Unavailable";
             }}
           />
-          <p className="text-xs text-white mt-2 text-center bg-bgmi-dark px-2 py-1 rounded">Interactive map showing drop locations and strategic points</p>
+          <p className="text-xs text-gray-600 mt-2 text-center bg-gray-50 px-2 py-1 rounded">
+            Interactive map showing drop locations and strategic points
+          </p>
         </div>
         
-        <div className="bg-bgmi-darker p-4 rounded-lg border border-bgmi-blue/20">
-          <h3 className="text-bgmi-blue font-medium mb-3 text-glow">Recommended Drop Locations</h3>
+        <div className="bg-white p-4 rounded-lg border border-gray-200 shadow-sm">
+          <h3 className="text-gray-800 font-medium mb-3">Recommended Drop Locations</h3>
           
-          <div className="space-y-3 max-h-[400px] overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-bgmi-blue/30 scrollbar-track-bgmi-darker">
+          <div className="space-y-3 max-h-[400px] overflow-y-auto pr-2">
             {mapLocations[selectedMap as keyof typeof mapLocations].map((location, index) => (
-              <div key={index} className="border-b border-bgmi-blue/10 pb-3 mb-3 last:border-b-0 last:mb-0 last:pb-0 bg-gradient-to-r from-bgmi-dark to-transparent p-3 rounded-md hover:from-bgmi-dark/80 hover:to-bgmi-darker/80 transition-all duration-200">
-                <p className="text-white font-medium">{location.name}</p>
-                <p className="text-white text-sm bg-bgmi-dark/50 p-1 rounded mt-1">{location.description}</p>
+              <div key={index} className="border-b border-gray-100 pb-3 mb-3 last:border-b-0 last:mb-0 last:pb-0 bg-gray-50 p-3 rounded-md hover:bg-gray-100 transition-colors">
+                <p className="text-gray-800 font-medium">{location.name}</p>
+                <p className="text-gray-600 text-sm mt-1">{location.description}</p>
                 <div className="flex mt-2">
                   <div className="mr-4">
-                    <span className="text-xs text-white bg-bgmi-darker px-2 py-0.5 rounded">Loot Quality</span>
+                    <span className="text-xs text-gray-600 bg-white px-2 py-0.5 rounded shadow-sm">
+                      Loot Quality
+                    </span>
                     {renderRatingBars(location.loot, 'loot')}
                   </div>
                   <div>
-                    <span className="text-xs text-white bg-bgmi-darker px-2 py-0.5 rounded">Risk Level</span>
+                    <span className="text-xs text-gray-600 bg-white px-2 py-0.5 rounded shadow-sm">
+                      Risk Level
+                    </span>
                     {renderRatingBars(location.risk, 'risk')}
                   </div>
                 </div>
