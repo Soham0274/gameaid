@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
@@ -15,22 +14,23 @@ const HeatMap: React.FC<HeatMapProps> = ({
 }) => {
   const [selectedMap, setSelectedMap] = useState("erangel");
   
-  // Updated with direct URLs to ensure images are visible
   const mapImages = {
-    erangel: "https://media.discordapp.net/attachments/1232390066248175647/1232390249582788688/erangel-heatmap.jpg",
+    erangel: "/lovable-uploads/1005e1f8-411f-4749-9f4a-2cc93ecb025c.png",
     miramar: "https://media.discordapp.net/attachments/1232390066248175647/1232390249909940345/miramar-heatmap.jpg",
     sanhok: "https://media.discordapp.net/attachments/1232390066248175647/1232390250316787833/sanhok-heatmap.jpg",
     vikendi: "https://media.discordapp.net/attachments/1232390066248175647/1232390250731458630/vikendi-heatmap.jpg"
   };
   
-  // Location data for each map
   const mapLocations = {
     erangel: [
-      { name: "Military Base", loot: 3, risk: 4, description: "High-tier loot, high risk. Popular for skilled players." },
-      { name: "Pochinki", loot: 3, risk: 3, description: "Central location with good loot. Great for early fights." },
-      { name: "Georgopol", loot: 4, risk: 3, description: "Excellent loot in the containers. Good for squad play." },
-      { name: "School", loot: 3, risk: 5, description: "Dense building with high-tier loot. Extremely contested." },
-      { name: "Mansion", loot: 2, risk: 2, description: "Moderate loot with lower player traffic." }
+      { name: "Military Base", loot: 5, risk: 5, description: "High-tier military loot. Popular hot drop location with excellent vehicle spawns." },
+      { name: "Pochinki", loot: 4, risk: 5, description: "Central town with dense building clusters. Great for early game fights and strategic positioning." },
+      { name: "School", loot: 4, risk: 5, description: "Iconic location with concentrated loot. High-risk area with multiple entry points." },
+      { name: "Georgopol", loot: 4, risk: 4, description: "Large city with extensive loot opportunities in the containers and apartments." },
+      { name: "Rozhok", loot: 3, risk: 3, description: "Medium-sized town with decent loot and good rotation options." },
+      { name: "Yasnaya Polyana", loot: 4, risk: 4, description: "Large residential area with plenty of loot and multiple escape routes." },
+      { name: "Mylta Power", loot: 4, risk: 3, description: "Power plant complex with high-tier loot and good defensive positions." },
+      { name: "Novorepnoye", loot: 4, risk: 3, description: "Coastal city with military-grade loot and vehicle spawns." }
     ],
     miramar: [
       { name: "Hacienda del Patron", loot: 4, risk: 5, description: "Luxury estate with top-tier loot. High-risk, high-reward." },
@@ -55,7 +55,6 @@ const HeatMap: React.FC<HeatMapProps> = ({
     ]
   };
   
-  // Helper function to render rating bars
   const renderRatingBars = (rating: number, type: 'loot' | 'risk') => {
     const color = type === 'loot' ? 'bg-bgmi-blue' : 'bg-red-500';
     return (
@@ -109,10 +108,9 @@ const HeatMap: React.FC<HeatMapProps> = ({
       
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div className="bg-bgmi-darker p-4 rounded-lg border border-bgmi-blue/20 transition-all duration-300 hover:border-bgmi-blue/50">
-          {/* Added specific width/height, alt text and error handling for images */}
           <img 
             src={mapImages[selectedMap as keyof typeof mapImages]} 
-            alt={`${selectedMap.charAt(0).toUpperCase() + selectedMap.slice(1)} heatmap`} 
+            alt={`${selectedMap.charAt(0).toUpperCase() + selectedMap.slice(1)} map layout`}
             className="w-full h-auto rounded border border-bgmi-blue/20"
             width="671"
             height="671"
@@ -121,7 +119,7 @@ const HeatMap: React.FC<HeatMapProps> = ({
               e.currentTarget.src = "https://placehold.co/671x671/0f172a/4d7fea?text=Map+Image+Unavailable";
             }}
           />
-          <p className="text-xs text-white mt-2 text-center bg-bgmi-dark px-2 py-1 rounded">Heatmap showing drop frequency and player density</p>
+          <p className="text-xs text-white mt-2 text-center bg-bgmi-dark px-2 py-1 rounded">Interactive map showing drop locations and strategic points</p>
         </div>
         
         <div className="bg-bgmi-darker p-4 rounded-lg border border-bgmi-blue/20">
