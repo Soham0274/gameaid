@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+
+import React from 'react';
 import { Button } from '@/components/ui/button';
-import { Search, Menu, User, LogOut } from 'lucide-react';
+import { Menu, User, LogOut } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { ThemeToggle } from './ThemeToggle';
 
@@ -70,15 +71,6 @@ const Navbar: React.FC<NavbarProps> = ({
         <div className="flex items-center gap-4">
           <ThemeToggle />
           
-          <div className="relative hidden md:flex items-center">
-            <Search className="absolute left-3 h-4 w-4 text-muted-foreground" />
-            <input
-              type="search"
-              placeholder="Search stats, weapons..."
-              className="bg-background border rounded-full h-9 w-[200px] pl-9 pr-4 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
-            />
-          </div>
-          
           {!isLoggedIn && questionsLeft !== undefined && (
             <div className="text-xs text-muted-foreground">
               <span className="font-medium text-primary">{questionsLeft}</span> questions left
@@ -105,7 +97,6 @@ const Navbar: React.FC<NavbarProps> = ({
             </div>
           ) : (
             <Button 
-              className="bg-primary hover:bg-primary/90 text-white" 
               onClick={onLoginClick}
             >
               <User className="h-4 w-4 mr-2" />
