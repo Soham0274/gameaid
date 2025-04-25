@@ -1,8 +1,8 @@
-
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Search, Menu, User, LogOut } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { ThemeToggle } from './ThemeToggle';
 
 interface NavbarProps {
   onLoginClick: () => void;
@@ -32,7 +32,6 @@ const Navbar: React.FC<NavbarProps> = ({
       { id: 'rewards', label: 'Rewards' }
     ];
     
-    // Add profile tab if logged in
     if (isLoggedIn) {
       baseTabs.push({ id: 'profile', label: 'Profile' });
     }
@@ -41,46 +40,48 @@ const Navbar: React.FC<NavbarProps> = ({
   };
 
   return (
-    <header className="border-b border-gray-200 bg-white shadow-sm sticky top-0 z-50">
+    <header className="border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50">
       <div className="container flex h-16 items-center justify-between">
         <div className="flex items-center gap-2">
-          <Menu className="h-6 w-6 text-blue-500 md:hidden" />
+          <Menu className="h-6 w-6 text-primary md:hidden" />
           <div className="flex items-center gap-1">
-            <span className="font-bold text-2xl text-gray-800">Game</span>
-            <span className="font-bold text-2xl text-blue-500">Aid</span>
+            <span className="font-bold text-2xl text-foreground">Game</span>
+            <span className="font-bold text-2xl text-primary">Aid</span>
           </div>
         </div>
         
-        <div className="hidden md:flex items-center gap-4 overflow-x-auto">
+        <nav className="hidden md:flex items-center gap-4 overflow-x-auto">
           {getNavTabs().map(tab => (
             <button 
               key={tab.id}
               className={cn(
-                "text-sm font-medium transition-colors px-1 py-1 whitespace-nowrap",
+                "text-sm font-medium transition-all duration-300 px-3 py-2 rounded-md",
                 activeTab === tab.id 
-                  ? "text-blue-500 border-b-2 border-blue-500" 
-                  : "text-gray-600 hover:text-blue-500"
+                  ? "text-primary bg-primary/10" 
+                  : "text-muted-foreground hover:text-primary hover:bg-primary/5"
               )}
               onClick={() => onTabChange(tab.id)}
             >
               {tab.label}
             </button>
           ))}
-        </div>
+        </nav>
         
         <div className="flex items-center gap-4">
+          <ThemeToggle />
+          
           <div className="relative hidden md:flex items-center">
-            <Search className="absolute left-2.5 h-4 w-4 text-gray-400" />
+            <Search className="absolute left-3 h-4 w-4 text-muted-foreground" />
             <input
               type="search"
               placeholder="Search stats, weapons..."
-              className="bg-gray-50 border border-gray-200 rounded-md h-9 w-[200px] pl-8 text-sm text-gray-600 focus:outline-none focus:ring-1 focus:ring-blue-500"
+              className="bg-background border rounded-full h-9 w-[200px] pl-9 pr-4 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
             />
           </div>
           
           {!isLoggedIn && questionsLeft !== undefined && (
-            <div className="text-xs text-gray-600">
-              <span className="font-medium text-blue-500">{questionsLeft}</span> questions left
+            <div className="text-xs text-muted-foreground">
+              <span className="font-medium text-primary">{questionsLeft}</span> questions left
             </div>
           )}
           
@@ -88,25 +89,23 @@ const Navbar: React.FC<NavbarProps> = ({
             <div className="flex items-center gap-2">
               <Button 
                 variant="outline" 
-                className="flex items-center gap-2 border-gray-200 text-gray-700 bg-white"
+                className="flex items-center gap-2"
                 onClick={() => onTabChange('profile')}
               >
-                <User className="h-4 w-4 text-blue-500" />
+                <User className="h-4 w-4" />
                 <span>Profile</span>
               </Button>
               <Button 
                 variant="ghost" 
                 size="icon" 
-                onClick={onLogout} 
-                className="text-gray-600 hover:text-blue-500"
+                onClick={onLogout}
               >
                 <LogOut className="h-4 w-4" />
               </Button>
             </div>
           ) : (
             <Button 
-              variant="outline" 
-              className="bg-blue-500 hover:bg-blue-600 text-white transition-colors border-0" 
+              className="bg-primary hover:bg-primary/90 text-white" 
               onClick={onLoginClick}
             >
               <User className="h-4 w-4 mr-2" />
